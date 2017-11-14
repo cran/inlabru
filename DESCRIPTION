@@ -1,8 +1,8 @@
 Package: inlabru
 Type: Package
 Title: Spatial Inference using Integrated Nested Laplace Approximation
-Version: 2.1.1
-Date: 2017-11-08
+Version: 2.1.2
+Date: 2017-11-14
 Author: Fabian E. Bachl <bachlfab@gmail.com> (main code), 
         Finn Lindgren <Finn.Lindgren@ed.ac.uk> (SPDE posterior plotting),
         David L. Borchers <dlb@st-andrews.ac.uk> (Gorilla data import and sampling, multiplot tool), 
@@ -19,11 +19,11 @@ License: GPL (>= 2)
 Imports: rgdal, rgeos, utils
 Suggests: testthat, ggmap, rgl, sphereplot, raster, Matrix, dplyr,
         maptools, mgcv, shiny, spatstat, spatstat.data, RColorBrewer,
-        graphics
-Depends: R (>= 3.3), INLA, sp, stats, methods, ggplot2,
+        graphics, INLA,
+Depends: R (>= 3.3), sp, stats, methods, ggplot2,
 Additional_repositories: https://www.math.ntnu.no/inla/R/testing
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-11-10 11:49:14 UTC; fbachl
+Packaged: 2017-11-14 15:33:42 UTC; fbachl
 Repository: CRAN
-Date/Publication: 2017-11-10 18:16:14 UTC
+Date/Publication: 2017-11-14 16:38:44 UTC
