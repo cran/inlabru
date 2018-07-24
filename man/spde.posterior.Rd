@@ -23,14 +23,11 @@ parameter of a model's SPDE component. Can also plot Matern correlation or covar
 }
 \examples{
 \donttest{
+if (require("INLA", quietly = TRUE)) {
 
-# Load INLA
-
-library(INLA)
-    
 # Load 1D Poisson process data
 
-data(Poisson2_1D)
+data(Poisson2_1D, package = "inlabru")
 
 # Take a look at the point (and frequency) data
 
@@ -44,7 +41,6 @@ ggplot(pts2) +
 x <- seq(0, 55, length = 20)
 mesh1D <- inla.mesh.1d(x, boundary = "free")
 mdl <- x ~ spde1D(map = x, model = inla.spde2.matern(mesh1D)) + Intercept
-init.tutorial()
 fit <- lgcp(mdl, pts2, domain = list(x = c(0,55)))
 
 # Calculate and plot the posterior range 
@@ -77,6 +73,7 @@ plot(matcor)
 matcov = spde.posterior(fit, "spde1D", "matern.covariance")
 plot(matcov)
 
+}
 }
 }
 \author{

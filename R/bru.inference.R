@@ -41,11 +41,15 @@ generate = function(object, ...){ UseMethod("generate") }
 #'               (see \code{inla.models()$likelihood}) inlabru supports fitting Cox processes 
 #'               via \code{family = "cp"}. The latter requires contructing a likelihood using the \link{like}
 #'               function and providing it via the ... parameter list. As an alternative to bru, the \link{lgcp} 
-#'               function provides a convenient interface to fitting Cox processes.
-#' @param data A data.frame or SpatialPoints[DataFrame] object.
-#' @param ... Additional likelihoods, each constructed by a calling \link{like}.
+#'               function provides a convenient interface to fitting Cox processes. See details.
+#' @param data A data.frame or SpatialPoints[DataFrame] object. See details.
+#' @param ... Additional likelihoods, each constructed by a calling \link{like}. See details.
 #' @param options A list of name and value pairs that are either interpretable by \link{bru.options} 
-#'                or valid inla parameters.
+#'                or valid inla parameters. 
+#'                
+#' @details family and ... must either be parameters to \link{like}, or \code{lhood} objects constructed by \link{like}.
+#'          \code{data} must either be an \code{lhood} object, a data container, or \code{NULL}. If \code{NULL},
+#'          data must be supplied through direct calls to \link{like}.
 #' 
 #' @return bru returns an object of class "bru". A \code{bru} object inherits from \link[INLA]{inla} 
 #'         (see the inla documentation for its properties) and adds additional information stored 
@@ -75,35 +79,46 @@ bru = function(components = y ~ Intercept,
   # by like(). In the former case constrcut a proper likelihood using like() and
   # merge it with the list of likelihood provided via `...`.
   
-  lhoods = list()
-  if ( inherits(family, "lhood") & inherits(data, "lhood") ) {
-    lhoods = c(lhoods, list(default = family, lh2 = data)) ; data = NULL ; family = NULL
-  } else if ( inherits(family, "lhood") & !inherits(data, "lhood") ) {
-    lhoods = c(list(default = family), lhoods) ; family = NULL 
-  } else if ( !inherits(family, "lhood") & inherits(data, "lhood") ) {
-    lhoods = c(list(default = like(family), lh2 = data), lhoods); data = NULL 
+  dot_is_lhood <- vapply(list(...), function(lh) inherits(lh, "lhood"), TRUE)
+  if (inherits(family, "lhood") | inherits(data, "lhood")) {
+    ## Check that family and all '...' are lhood objects
+    if (!inherits(family, "lhood") | !all(dot_is_lhood)) {
+      stop("Cannot mix like() parameters with 'lhood' objects.")
+    }
+    if (inherits(data, "lhood")) {
+      lhoods = list(family, data, ...) ; data = NULL ; family = NULL
+    } else {
+      lhoods = list(family, ...) ; family = NULL 
+    }
+  } else if (any(dot_is_lhood)) {
+    if (!is.null(family)) {
+      stop("Cannot mix like() parameters with 'lhood' objects.")
+    }
+    if (!all(dot_is_lhood)) {
+      stop("Cannot mix like() parameters with 'lhood' objects.")
+    }
+    lhoods = list(...)
   } else {
-    if( !is.null(family) ) { lhoods = c(list(default = like(family, data = data, E = options$E))); family = NULL }
+    lhoods = list(like(family = family, data = data, ..., options = options)); family = NULL
   }
-  lhoods = c(lhoods, list(...))
-  
-  
+
+  if (length(lhoods) == 0) {
+    stop("No response likelihood models provided.")
+  }
+
   # If a likelihood was provided without data/response, update according to bru's 
   # arguments `data` and LHS of components
   
-  for (k in 1:length(lhoods)) {
-    
-    lh = lhoods[[k]]
-    
+  for (k in seq_along(lhoods)) {
     # Check if likelihood has data attached to it. If not, attach the 'data' argument or break if not available
-    if ( is.null(lh$data) ) {
-      if (is.null(data)) {stop(sprintf("Likelihood %s has not data attached to it and no data was supplied to bru() either.", names(lhoods)[[k]]))}
-      lh$data = data
+    if ( is.null(lhoods[[k]]$data) ) {
+      if (is.null(data)) {
+        stop(paste0("Likelihood ", k, " has no data attached to it and no data was supplied to bru()."))
+      }
+      lhoods[[k]]$data = data
     }
-    if ( is.null(lh$components) ) { lh$components = components }
-    if ( is.null(lh$response) ) { lh$response = all.vars(update(components, .~0)) }
-    
-    lhoods[[k]] = lh
+    if ( is.null(lhoods[[k]]$components) ) { lhoods[[k]]$components = components }
+    if ( is.null(lhoods[[k]]$response) ) { lhoods[[k]]$response = all.vars(update(components, .~0)) }
   }
   
   # Create joint stackmaker
@@ -112,14 +127,25 @@ bru = function(components = y ~ Intercept,
   }
   
   # Set max interations to 1 if all likelihood formulae are linear 
-  if (all(sapply(lhoods, function(lh) lh$linear))) { options$max.iter = 1 }
+  if (all(vapply(lhoods, function(lh) lh$linear, TRUE))) { options$max.iter <- 1 }
   
   # Extract the family of each likelihood
-  family = sapply(1:length(lhoods), function(k) lhoods[[k]]$inla.family)
+  family <- vapply(seq_along(lhoods), function(k) lhoods[[k]]$inla.family, "family")
   
   # Run iterated INLA
-  if ( options$run ) { result = do.call(iinla, list(data, bru.model, stk, family = family, n = options$max.iter, offset = options$offset, result = options$result, inla.options = options$inla.options))} 
-  else { result = list() }
+  if (options$run) {
+    result <- do.call(iinla,
+                      list(data,
+                           bru.model,
+                           stk,
+                           family = family,
+                           n = options$max.iter,
+                           offset = options$offset,
+                           result = options$result,
+                           inla.options = options$inla.options))
+  } else {
+    result <- list()
+  }
   
   ## Create result object ## 
   result$sppa$method = "bru"
@@ -143,16 +169,27 @@ bru = function(components = y ~ Intercept,
 #' @param data Likelihood-specific data.
 #' @param components Components.
 #' @param mesh An inla.mesh object.
-#' @param E Exposure parameter for family = 'poisson' passed on to \link[INLA]{inla}. Special case if family is 'cp': rescale all integration weights by E.
+#' @param E Exposure parameter for family = 'poisson' passed on to
+#'   \link[INLA]{inla}. Special case if family is 'cp': rescale all integration
+#'   weights by E. Default taken from \code{options$E}.
+#' @param Ntrials A vector containing the number of trials for the 'binomial'
+#'  likelihood. Default value is rep(1, n.data).
+#'  Default taken from \code{options$Ntrials}.
 #' @param samplers Integration domain for 'cp' family.
 #' @param ips Integration points for 'cp' family. Overrides \code{samplers}.
 #' @param domain Named list of domain definitions.
+#' @param options list of global options overriding \link{bru.options}
 #' 
 #' @return A likelihood configuration which can be used to parameterize \link{bru}.
 #' 
 #' @example inst/examples/like.R
 
-like = function(family, formula = . ~ ., data = NULL, components = NULL, mesh = NULL, E = 1, samplers = NULL, ips = NULL, domain = NULL) {
+like <- function(family, formula = . ~ ., data = NULL, components = NULL,
+                 mesh = NULL, E = NULL, Ntrials = NULL,
+                 samplers = NULL, ips = NULL, domain = NULL,
+                 options = list()) {
+
+  options = do.call(bru.options, options)
   
   # Some defaults
   inla.family = family
@@ -161,13 +198,22 @@ like = function(family, formula = . ~ ., data = NULL, components = NULL, mesh = 
   linear = as.character(formula)[length(as.character(formula))] == "."
   
   # If not linear, set predictor expression according to the formula's RHS
-  if ( !linear ) { expr = parse(text = as.character(formula)[length(as.character(formula))]) }
-  else { expr = NULL }
+  if ( !linear ) {
+    expr = parse(text = as.character(formula)[length(as.character(formula))])
+  } else {
+    expr = NULL
+  }
   
   # Set response name
   response = all.vars(update(formula, .~0))
   if (response[1] == ".") response = NULL
   
+  if (is.null(E)) {
+    E <- options$E
+  }
+  if (is.null(Ntrials)) {
+    Ntrials <- options$Ntrials
+  }
   
   # More on special bru likelihoods
   if ( family == "cp" ) {
@@ -199,6 +245,7 @@ like = function(family, formula = . ~ ., data = NULL, components = NULL, mesh = 
          formula = formula, 
          data = data, 
          E = E, 
+         Ntrials = Ntrials, 
          samplers = samplers, 
          linear = linear,
          expr = expr,
@@ -219,18 +266,21 @@ stackmaker.like = function(lhood) {
   env = new.env() ; env$lhood = lhood
   
   # Special inlabru likelihoods
-  if (lhood$family == "cp"){
-    sm = function(model, result) {
-      INLA::inla.stack(make.stack(points = lhood$data, model = model, expr = lhood$expr, y = 1, E = 0, result = result),
-                 make.stack(points = lhood$ips, model = model, expr = lhood$expr, y = 0, E = lhood$E * lhood$ips$weight, offset = 0, result = result))
+  if (lhood$family == "cp") {
+    sm <- function(model, result) {
+      INLA::inla.stack(
+        make.stack(points = lhood$data, model = model, expr = lhood$expr, y = 1,
+                   E = 0, result = result),
+        make.stack(points = lhood$ips, model = model, expr = lhood$expr, y = 0,
+                   E = lhood$E * lhood$ips$weight, offset = 0, result = result)
+      )
     }
-    
-  } else { 
-    
-    sm = function(model, result) { 
-      make.stack(points = lhood$data, model = model, expr = lhood$expr, y = as.data.frame(lhood$data)[,lhood$response], E = lhood$E, result = result) 
+  } else {
+    sm <- function(model, result) {
+      make.stack(points = lhood$data, model = model, expr = lhood$expr,
+                 y = as.data.frame(lhood$data)[, lhood$response],
+                 E = lhood$E, Ntrials = lhood$Ntrials, result = result)
     }
-    
   }
   environment(sm) = env
   sm
@@ -247,16 +297,18 @@ stackmaker.like = function(lhood) {
 #' @param max.iter maximum number of inla iterations
 #' @param offset the usual \link[INLA]{inla} offset. If a nonlinear formula is used, the resulting Taylor approximation constant will be added to this automatically.
 #' @param result An \code{inla} object returned from previous calls of \link[INLA]{inla}, \link{bru} or \link{lgcp}. This will be used as a starting point for further improvement of the approximate posterior.
-#' @param E \link[INLA]{inla} exposure parameter
+#' @param E \link[INLA]{inla} 'poisson' likelihood exposure parameter
+#' @param Ntrials \link[INLA]{inla} 'binomial' likelihood parameter
 #' @param control.compute INLA option, See \link[INLA]{control.compute}
 #' @param control.inla INLA option, See \link[INLA]{control.inla}
+#' @param control.fixed INLA option, See \link[INLA]{control.fixed}
 #' @param ... Additional options passed on to \link[INLA]{inla}
 #' 
 #' @author Fabian E. Bachl <\email{bachlfab@@gmail.com}>
 #' 
 #' @examples
 #' 
-#' \dontrun{
+#' \donttest{
 #' 
 #' # Generate default bru options
 #' opts = bru.options()
@@ -272,17 +324,21 @@ bru.options = function(mesh = NULL,
                        offset = 0,
                        result = NULL, 
                        E = 1,
-                       control.compute = list(config = TRUE, dic = TRUE, waic = TRUE),
-                       control.inla = iinla.getOption("control.inla"),
+                       Ntrials = 1,
+                       control.compute = inlabru:::iinla.getOption("control.compute"),
+                       control.inla = inlabru:::iinla.getOption("control.inla"),
+                       control.fixed = inlabru:::iinla.getOption("control.fixed"),
                        ... )
 {
   
   args <- as.list(environment())
   args$control.compute = NULL
   args$control.inla = NULL
+  args$control.fixed = NULL
   args$inla.options = list(...)
   args$inla.options$control.compute = control.compute
   args$inla.options$control.inla = control.inla
+  args$inla.options$control.fixed = control.fixed
   
   args
 }
@@ -437,13 +493,10 @@ bru.components = function() { NULL }
 #' @return An \link{bru} object
 #' @examples
 #' 
-#' \dontrun{
+#' \donttest{
 #' 
-#' Load the Gorilla data
-#' data(gorillas)
-#' 
-#' # Use tutorial setting and thus empirical Bayes for faster inference
-#' init.tutorial()
+#' # Load the Gorilla data
+#' data(gorillas, package = "inlabru")
 #' 
 #' # Plot the Gorilla nests, the mesh and the survey boundary
 #' ggplot() + 
@@ -452,6 +505,7 @@ bru.components = function() { NULL }
 #'   gg(gorillas$boundary) + 
 #'   coord_fixed()
 #' 
+#' if (require("INLA", quietly = TRUE)) {
 #' # Define SPDE prior
 #' matern <- inla.spde2.pcmatern(gorillas$mesh, 
 #'                               prior.sigma = c(0.1, 0.01), 
@@ -475,6 +529,7 @@ bru.components = function() { NULL }
 #'   coord_fixed()
 #' 
 #' }
+#' }
 #' 
 
 lgcp = function(components,
@@ -483,10 +538,11 @@ lgcp = function(components,
                 domain = NULL,
                 ips = NULL,
                 formula = . ~ .,
-                E = 1,
+                E = NULL,
                 options = list()) {
-  
-  lik = like("cp", formula = formula, data = data, samplers = samplers, components = components, E = E, ips = ips, domain = domain)
+  lik = like("cp", formula = formula, data = data, samplers = samplers,
+             components = components, E = E, ips = ips, domain = domain,
+             options = options)
   result = bru(components, lik, options = options)
   
 }
@@ -571,11 +627,19 @@ summary.bru = function(object, ...) {
   cat("\n--- Random effects ------------------------------------------------------------------------------- \n\n")
   for ( nm in names(object$summary.random) ){
     sm = object$summary.random[[nm]]
-    cat(paste0(nm,": "))
-    cat(paste0("mean = [", signif(range(sm$mean)[1])," : ",signif(range(sm$mean)[2]), "]"))
-    cat(paste0(", quantiles = [", signif(range(sm[,c(4,6)])[1])," : ",signif(range(c(4,6))[2]), "]"))
+    cat(paste0(nm," ranges: "))
+    cat(paste0("mean = [",
+               signif(range(sm$mean)[1]),", ",
+               signif(range(sm$mean)[2]), "]"))
+    cat(paste0(", sd = [",
+               signif(range(sm$sd)[1]),", ",
+               signif(range(sm$sd)[2]), "]"))
+    cat(paste0(", quantiles = [",
+               signif(range(sm[,c(4,6)])[1])," : ",
+               signif(range(sm[,c(4,6)])[2]), "]"))
     if (nm %in% names(object$model$mesh)) {
-      cat(paste0(", area = ", signif(sum(diag(as.matrix(INLA::inla.mesh.fem(object$model$mesh[[nm]])$c0))))))
+      cat(paste0(", and area = ",
+                 signif(sum(Matrix::diag(INLA::inla.mesh.fem(object$model$mesh[[nm]])$c0)))))
     }
     cat("\n")
   }
@@ -660,7 +724,7 @@ predict.bru = function(object,
         smy[[nm]] = summarize(lapply(vals, function(v) v[[nm]]), x = vals[[1]][,covar,drop=FALSE])
     }
     vals = smy
-    is.annot = sapply(names(vals), function(v) all(vals[[v]]$sd==0))
+    is.annot <- vapply(names(vals), function(v) all(vals[[v]]$sd == 0), TRUE)
     annot = do.call(cbind, lapply(vals[is.annot], function(v) v[,1]))
     vals = vals[!is.annot]
     if ( !is.null(annot) ) {
@@ -688,10 +752,6 @@ predict.bru = function(object,
 #' samples can be based on any R expression that is valid given these values/covariates and the joint
 #' posterior of the estimated random effects.
 #'  
-#' Mean value predictions are accompanied by the standard errors, upper and lower 2.5% quantiles, the
-#' median, variance, coefficient of variation as well as the variance and minimum and maximum sample
-#' value drawn in course of estimating the statistics.
-#'
 #' @aliases generate.bru
 #' @export
 #' @family sample generators
@@ -700,9 +760,10 @@ predict.bru = function(object,
 #' @param formula A formula determining which effects to sample from and how to combine them analytically.
 #' @param n.samples Integer setting the number of samples to draw in order to calculate the posterior statistics. 
 #'                  The default is rather low but provides a quick approximate result.
-#' @param ... ignored arguments (needed for S3 compatibility).
+#' @param ... additional, unused arguments.
 #' 
-#' @return Predicted values
+#' @return List of generated samples
+#' @seealso \link{predict.bru}
 #' @example inst/examples/generate.bru.R
 
 generate.bru = function(object,
@@ -884,7 +945,7 @@ summarize = function(data, x = NULL, cbind.only = FALSE) {
 
 iinla = function(data, model, stackmaker, n = 10, result = NULL, 
                  family,
-                 iinla.verbose = iinla.getOption("iinla.verbose"), 
+                 iinla.verbose = inlabru:::iinla.getOption("iinla.verbose"), 
                  offset = NULL, inla.options){
   
   # # Default number of maximum iterations
@@ -916,16 +977,21 @@ iinla = function(data, model, stackmaker, n = 10, result = NULL,
     if ( k > 1 ) { old.result = result } 
     result = NULL
     
-    icall = expression(result <- tryCatch( do.call(inla, c(list(formula = update.formula(model$formula, y.inla ~ .),
-                                                   data = c(inla.stack.mdata(stk), list.data(model)),
-                                                   family = family,
-                                                   control.predictor = list( A = INLA::inla.stack.A(stk), compute = TRUE),
-                                                   E = INLA::inla.stack.data(stk)$e,
-                                                   offset = INLA::inla.stack.data(stk)$bru.offset + offset),
-                                                   inla.options)), 
-                              error = warning
-                            )
-                       )
+    stk.data <- INLA::inla.stack.data(stk)
+    icall <- expression(
+      result <- tryCatch(
+        do.call(inla,
+                c(list(formula = update.formula(model$formula, BRU.response ~ .),
+                       data = c(stk.data, list.data(model)),
+                       family = family,
+                       control.predictor = list(A = INLA::inla.stack.A(stk), compute = TRUE),
+                       E = stk.data[["BRU.E"]],
+                       Ntrials = stk.data[["BRU.Ntrials"]],
+                       offset = stk.data[["BRU.offset"]] + offset),
+                  inla.options)), 
+        error = warning
+      )
+    )
     eval(icall)
     
     if ( is.character(result) ) { stop(paste0("INLA returned message: ", result)) }
@@ -946,15 +1012,44 @@ iinla = function(data, model, stackmaker, n = 10, result = NULL,
     if ( iinla.verbose ) { cat(" Done. ") }
     
     # Extract values tracked for estimating convergence
-    if ( n > 1 & k <= n) track[[k]] = cbind(effect = rownames(result$summary.fixed), iteration = k, result$summary.fixed)
+    if ( n > 1 & k <= n) {
+      # Note: The number of fixed effets may be zero, and strong
+      # non-linearities that don't necessarily affect the fixed
+      # effects may appear in the random effects, so we need to
+      # track all of them.
+      track[[k]] <- data.frame(effect = NULL, iteration = NULL, mean = NULL, sd = NULL)
+      if (!is.null(result$summary.fixed) && (nrow(result$summary.fixed) > 0)) {
+        track[[k]] <-
+          data.frame(effect = rownames(result$summary.fixed),
+                     iteration = rep(k, nrow(result$summary.fixed)),
+                     mean = result$summary.fixed[, "mean"],
+                     sd = result$summary.fixed[, "sd"])
+      }
+      if (!is.null(result$summary.random) &&
+          (length(result$summary.random) > 0)) {
+        ## This wastes memory temporarily.
+        joined.random <- do.call(rbind, result$summary.random)
+        track[[k]] <-
+          rbind(track[[k]],
+                data.frame(effect = rownames(joined.random),
+                           iteration = rep(k, nrow(joined.random)),
+                           mean = joined.random[, "mean"],
+                           sd = joined.random[, "sd"]))
+      }
+    }
     
     # Update stack given current result
     if ( n > 1 & k < n) { stk = stackmaker(data, model, result) }
     
     # Stopping criterion
     if ( k>1 ){
+      ## TODO: Make max.dev a configurable option.
       max.dev = 0.01
-      dev = do.call(c, lapply(by(do.call(rbind, track), as.factor(do.call(rbind, track)$effect), identity), function(X) { abs(X$mean[k-1] - X$mean[k])/X$sd[k] }))
+      dev = abs(track[[k-1]]$mean - track[[k]]$mean)/track[[k]]$sd
+      ##do.call(c, lapply(by(do.call(rbind, track),
+      ##                           as.factor(do.call(rbind, track)$effect),
+      ##                           identity),
+      ##                        function(X) { abs(X$mean[k-1] - X$mean[k])/X$sd[k] }))
       cat(paste0("Max deviation from previous: ", signif(100*max(dev),3),"% of SD [stop if: <",100*max.dev,"%]\n"))
       interrupt = all( dev < max.dev)
       if (interrupt) {cat("Convergence criterion met, stopping INLA iteration.")}

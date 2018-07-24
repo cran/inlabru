@@ -37,22 +37,20 @@
 #' @return A \code{data.frame} or \code{SpatialPointsDataFrame} of 1D and 2D integration points, respectively.
 #' 
 #' @examples
-#' 
 #' \donttest{
+#' if (require("INLA", quietly = TRUE)) {
+#' 
 #' # Create 50 integration points covering the dimension 'myDim' between 0 and 10. 
 #' 
 #' ips = ipoints(c(0,10), 50, name = "myDim")
 #' plot(ips)
-#' 
 #' 
 #' # Create integration points for the two intervals [0,3] and [5,10]
 #' 
 #' ips = ipoints(matrix(c(0,3, 5,10), nrow = 2, byrow = TRUE), 50)
 #' plot(ips)
 #' 
-#' 
 #' # Convert a 1D mesh into integration points
-#' library(INLA)
 #' mesh = inla.mesh.1d(seq(0,10,by = 1))
 #' ips = ipoints(mesh, name = "time")
 #' plot(ips)
@@ -75,7 +73,7 @@
 #' 
 #' ips = ipoints(gorillas$mesh)
 #' ggplot() + gg(gorillas$boundary) + gg(ips, aes(size = weight))
-#' 
+#' }
 #' }
 
 ipoints = function(region = NULL, domain = NULL, name = "x", group = NULL, project) {
@@ -124,7 +122,7 @@ ipoints = function(region = NULL, domain = NULL, name = "x", group = NULL, proje
         else { subdomain = stop("1D weight projection not yet implemented") }
         
         fem = INLA::inla.mesh.1d.fem(subdomain)
-        ips[[j]] = data.frame(weight = diag(as.matrix(fem$c0)))
+        ips[[j]] = data.frame(weight = Matrix::diag(fem$c0))
         ips[[j]][name] = subdomain$loc
         ips[[j]] = ips[[j]][,c(2,1)] # make weights second column
       }
@@ -144,7 +142,7 @@ ipoints = function(region = NULL, domain = NULL, name = "x", group = NULL, proje
     }
     
     ips = vertices(region)
-    ips$weight = diag(as.matrix(INLA::inla.mesh.fem(region)$c0))
+    ips$weight = INLA::inla.mesh.fem(region, order = 0)$va
     
     # backtransform
     if ( !is.null(region$crs) && !(is.na(region$crs@projargs))) { ips = stransform(ips, crs = crs) }
@@ -153,7 +151,7 @@ ipoints = function(region = NULL, domain = NULL, name = "x", group = NULL, proje
     
     ips = data.frame(x = region$loc)
     colnames(ips) = name
-    ips$weight = diag(as.matrix(INLA::inla.mesh.fem(region)$c0))
+    ips$weight = Matrix::diag(INLA::inla.mesh.fem(region)$c0)
     
   } else if ( class(region) == "SpatialPoints" ){
     
@@ -188,7 +186,9 @@ ipoints = function(region = NULL, domain = NULL, name = "x", group = NULL, proje
     
     # If SpatialPolygons are provided convert into SpatialPolygonsDataFrame and attach weight = 1
     if ( class(region)[1] == "SpatialPolygons" ) { 
-      region = SpatialPolygonsDataFrame(region, data = data.frame(weight = rep(1, length(region)))) 
+      region = SpatialPolygonsDataFrame(region,
+                                        data = data.frame(weight = rep(1, length(region))),
+                                        match.ID = FALSE)
     }
     
     cnames = coordnames(region)
@@ -216,8 +216,9 @@ ipoints = function(region = NULL, domain = NULL, name = "x", group = NULL, proje
     }
     
     ips = int.polygon(domain, loc = polyloc[,1:2], group = polyloc[,3])
-    df = data.frame(region@data[ips$group, pregroup, drop = FALSE], weight = ips[,"weight"])
-    ips = SpatialPointsDataFrame(ips[,c("x","y")],data = df)
+    df = data.frame(region@data[ips$group, pregroup, drop = FALSE],
+                    weight = ips[,"weight"])
+    ips = SpatialPointsDataFrame(ips[,c("x","y")], data = df, match.ID = FALSE)
     proj4string(ips) = proj4string(region)
     
     if ( !is.na(p4s) ) {
@@ -246,8 +247,9 @@ ipoints = function(region = NULL, domain = NULL, name = "x", group = NULL, proje
 #' @return A \code{data.frame} or \code{SpatialPointsDataFrame} of multidimensional integration points and their weights
 #' 
 #' @examples
-#'
 #' \donttest{
+#' # ipoints needs INLA
+#' if (require("INLA", quietly = TRUE)) {
 #' # Create integration points in dimension 'myDim' and 'myDiscreteDim' 
 #' ips1 = ipoints(c(0,8), name = "myDim")
 #' ips2 = ipoints(as.integer(c(1,2,3)), name = "myDiscreteDim")
@@ -258,10 +260,11 @@ ipoints = function(region = NULL, domain = NULL, name = "x", group = NULL, proje
 #' # Plot the integration points
 #' plot(ips$myDim, ips$myDiscreteDim, cex = 10*ips$weight)
 #' }
+#' }
 
 cprod = function(...) {
   ipl = list(...)
-  ipl = ipl[!sapply(ipl, is.null)]
+  ipl = ipl[!vapply(ipl, is.null, TRUE)]
   if ( length(ipl) == 0 ) return(NULL)
   
   if ( length(ipl) == 1 ) {
@@ -408,7 +411,10 @@ vertex.projection = function(points, mesh, columns = names(points), group = NULL
     coords = mesh$loc[as.numeric(names(w.by)),c(1,2)]
     data$vertex = as.numeric(names(w.by))
     
-    ret = SpatialPointsDataFrame(coords, proj4string = CRS(proj4string(points)), data = data)
+    ret = SpatialPointsDataFrame(coords,
+                                 proj4string = CRS(proj4string(points)),
+                                 data = data,
+                                 match.ID = FALSE)
     coordnames(ret) = coordnames(points)
     
     # If null is not not NULL, add vertices to which no data was projected
@@ -510,7 +516,7 @@ vertex.projection.1d = function(points, mesh, group = NULL, column = "weight", s
 
 #' Weighted summation (integration) of data frame subsets
 #'
-#' A typicel task in statistical inference to integrate a (multivariate) function along one or
+#' A typical task in statistical inference to integrate a (multivariate) function along one or
 #' more dimensions of its domain. For this purpose, the function is evaluated at some points
 #' in the domain and the values are summed up using weights that depend on the area being 
 #' integrated over. This function performs the weighting and summation conditional for each level
@@ -526,8 +532,9 @@ vertex.projection.1d = function(points, mesh, group = NULL, column = "weight", s
 #' @return A \code{data.frame} of integrals, one for each level of the cross product of all dimensions not being integrated over.
 #' 
 #' @examples 
-#' 
 #' \donttest{
+#' # ipoints needs INLA
+#' if (require("INLA", quietly = TRUE)) {
 #' # Create integration points in two dimensions, x and y
 #'
 #' ips = cprod(ipoints(c(0,10), 10, name = "x"),
@@ -538,6 +545,7 @@ vertex.projection.1d = function(points, mesh, group = NULL, column = "weight", s
 #' # domain size 40
 #'
 #' int(ips, rep(1, nrow(ips)), c("x","y"))
+#' }
 #' }
 
 

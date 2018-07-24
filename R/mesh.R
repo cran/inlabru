@@ -11,6 +11,7 @@ setClass("inla.mesh")
 #'
 #'
 #' @aliases is.inside
+#' @export
 #' @keywords internal
 #' @param mesh an inla.mesh object.
 #' @param loc Points in space stored either as data.frame, a two-column matrix of x and y coordinates or a SpatialPoints object.
@@ -19,10 +20,11 @@ setClass("inla.mesh")
 #' @author Fabian E. Bachl <\email{bachlfab@@gmail.com}>
 #' 
 #' @examples 
-#' \dontrun{
+#' \donttest{
+#' if (require("INLA", quietly = TRUE)) {
 #' # Load Gorilla data
 #' 
-#' data("gorillas")
+#' data("gorillas", package = "inlabru")
 #' 
 #' # Check if all Gorilla nests are inside the mesh
 #' 
@@ -33,7 +35,7 @@ setClass("inla.mesh")
 #' loc = coordinates(gorillas$nests)
 #' all(is.inside(gorillas$mesh, loc))
 #' }
-#' 
+#' }
 
 is.inside = function(mesh, loc, mesh.coords = NULL) {
   if ( inherits(loc, "Spatial") ) { loc = coordinates(loc) }

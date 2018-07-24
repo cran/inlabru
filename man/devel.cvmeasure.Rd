@@ -25,10 +25,12 @@ Variance and correlations measures.
 Calculates local and integrated variance and correlation measures as introduced by Yuan et al. (2017).
 }
 \examples{
-\dontrun{
+\donttest{
+if (require("INLA", quietly = TRUE)) {
+  
 # Load Gorilla data
 
-data("gorillas")
+data("gorillas", package = "inlabru")
 
 # Use RColorBrewer 
 
@@ -45,8 +47,6 @@ pcmatern <- inla.spde2.pcmatern(gorillas$mesh,
 cmp <- coordinates ~ vegetation(map = gorillas$gcov$vegetation, model = "factor") +
   spde(map = coordinates, model = pcmatern, mesh = gorillas$mesh) -
   Intercept
-
-init.tutorial() # Faster inferece for example
 
 fit <- lgcp(cmp, gorillas$nests, samplers = gorillas$boundary)
 
@@ -112,7 +112,7 @@ vm.int <- devel.cvmeasure(joint, field, veg,
 vm.int
 
 }
-
+}
 }
 \references{
 Y. Yuan, F. E. Bachl, F. Lindgren, D. L. Brochers, J. B. Illian, S. T. Buckland, H. Rue, T. Gerrodette. 2017. 

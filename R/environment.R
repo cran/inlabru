@@ -35,8 +35,8 @@ requireINLA = function(){
 #' @author Fabian E. Bachl <\email{bachlfab@@gmail.com}>
 #' 
 #' @examples
-#' 
 #' \dontrun{
+#' # Note: Only run this if you want to change the inlabru options for this session
 #' 
 #' # Determine current bru default:
 #' bo = bru.options()
@@ -45,7 +45,7 @@ requireINLA = function(){
 #' bo$inla.options$control.inla
 #' 
 #' # Now, let's run init.tutorial() to make empirical Bayes the default 
-#' integration method when \code{bru} calls \code{inla}
+#' # integration method when \code{bru} calls \code{inla}
 #' 
 #' init.tutorial()
 #' 
@@ -82,7 +82,10 @@ msg = function(txt) {
 
 logentry = function(txt) { iinla.env$log = c(iinla.env$log, paste0(Sys.time(),": ", txt)) }
 
-iinla.getOption = function (option = c("control.compute", "control.inla","iinla.verbose")) 
+iinla.getOption = function (option = c("control.compute",
+                                       "control.inla",
+                                       "iinla.verbose",
+                                       "control.fixed")) 
 {
   if (missing(option)) 
     stop("argument is required.")
@@ -93,8 +96,9 @@ iinla.getOption = function (option = c("control.compute", "control.inla","iinla.
   else opt = list()
 
   default.opt = list(iinla.verbose = FALSE,
-                     control.compute = list(config = TRUE),
-                     control.inla = list(int.strategy = "auto"))
+                     control.compute = list(config = TRUE, dic = TRUE, waic = TRUE),
+                     control.inla = list(int.strategy = "auto"),
+                     control.fixed = list(expand.factor.strategy = "inla"))
   res = c()
   for (i in 1:length(option)) {
     if (option[i] %in% names(opt)) {
@@ -112,7 +116,10 @@ iinla.getOption = function (option = c("control.compute", "control.inla","iinla.
 
 iinla.setOption = function (...) 
 {
-  iinla.setOption.core = function(option = c("control.compute","control.inla","iinla.verbose"), value) {
+  iinla.setOption.core = function(option = c("control.compute",
+                                             "control.inla",
+                                             "iinla.verbose",
+                                             "control.fixed"), value) {
     envir = iinla.env
     option = match.arg(option, several.ok = FALSE)
     if (!exists("iinla.options", envir = envir)) 

@@ -1,7 +1,9 @@
-\dontrun{
+\donttest{
+if (require("INLA", quietly = TRUE)) {
+  
 # Load Gorilla data
 
-data("gorillas")
+data("gorillas", package = "inlabru")
 
 # Use RColorBrewer 
 
@@ -18,8 +20,6 @@ pcmatern <- inla.spde2.pcmatern(gorillas$mesh,
 cmp <- coordinates ~ vegetation(map = gorillas$gcov$vegetation, model = "factor") +
   spde(map = coordinates, model = pcmatern, mesh = gorillas$mesh) -
   Intercept
-
-init.tutorial() # Faster inferece for example
 
 fit <- lgcp(cmp, gorillas$nests, samplers = gorillas$boundary)
 
@@ -85,4 +85,4 @@ vm.int <- devel.cvmeasure(joint, field, veg,
 vm.int
 
 }
-
+}
