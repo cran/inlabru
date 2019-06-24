@@ -1,7 +1,7 @@
 Package: inlabru
 Type: Package
 Title: Spatial Inference using Integrated Nested Laplace Approximation
-Version: 2.1.9
+Version: 2.1.12
 Authors@R: c(
   person("Fabian E.", "Bachl", email = "bachlfab@gmail.com", role = c("aut", "cre"),
          comment = "Fabian Bachl wrote the main code"),
@@ -29,9 +29,9 @@ Suggests: testthat, ggmap, rgl, sphereplot, raster, dplyr, maptools,
         INLA, knitr, rmarkdown
 Depends: R (>= 3.3), sp, stats, methods, ggplot2,
 Additional_repositories: https://inla.r-inla-download.org/R/testing
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 NeedsCompilation: no
-Packaged: 2018-07-21 12:41:13 UTC; fbachl
+Packaged: 2019-06-23 15:20:55 UTC; fbachl
 Author: Fabian E. Bachl [aut, cre] (Fabian Bachl wrote the main code),
   Finn Lindgren [aut] (<https://orcid.org/0000-0002-5833-2011>, Finn
     Lindgren wrote code for SPDE posterior plotting, and continued
@@ -44,4 +44,4 @@ Author: Fabian E. Bachl [aut, cre] (Fabian Bachl wrote the main code),
     import code)
 Maintainer: Fabian E. Bachl <bachlfab@gmail.com>
 Repository: CRAN
-Date/Publication: 2018-07-24 09:20:03 UTC
+Date/Publication: 2019-06-24 09:10:03 UTC

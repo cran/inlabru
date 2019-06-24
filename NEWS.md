@@ -1,3 +1,15 @@
+# inlabru 2.1.12
+
+* Workaround an integration points error for old (ca pre-2018) INLA versions
+
+# inlabru 2.1.11
+
+* Add CITATION file
+
+# inlabru 2.1.10
+
+* Fix internal sampling bug due to INLA changes
+
 # inlabru 2.1.9
 
 * Remove unused VignetteBuilder entry from DESCRIPTION
