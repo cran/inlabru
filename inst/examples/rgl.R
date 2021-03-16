@@ -1,21 +1,21 @@
-\donttest{
-if (require("rgl", quietly = TRUE) &&
-    require("sphereplot", quietly = TRUE)) {
+\dontrun{
+if (bru_safe_inla() &&
+  require("rgl", quietly = TRUE) &&
+  require("sphereplot", quietly = TRUE)) {
 
-# Load pantropoical dolphin data
+  # Load pantropoical dolphin data
 
-data("mexdolphin", package = "inlabru")
+  data("mexdolphin", package = "inlabru")
 
-# Show the globe
+  # Show the globe
 
-globe()
+  globe()
 
-# Add mesh, ship transects and dolphin sightings stored
-# as inla.mesh, SpatialLines and SpatialPoints objects, respectively
+  # Add mesh, ship transects and dolphin sightings stored
+  # as inla.mesh, SpatialLines and SpatialPoints objects, respectively
 
-glplot(mexdolphin$mesh)
-glplot(mexdolphin$samplers)
-glplot(mexdolphin$points)
-
+  glplot(mexdolphin$mesh)
+  glplot(mexdolphin$samplers)
+  glplot(mexdolphin$points)
 }
 }

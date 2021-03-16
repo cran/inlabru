@@ -2,25 +2,58 @@
 % Please edit documentation in R/bru.inference.R
 \name{like}
 \alias{like}
-\title{Likelihood construction for usage with \link{bru}}
+\alias{like_list}
+\alias{like_list.list}
+\alias{like_list.bru_like}
+\alias{[.bru_like_list}
+\title{Likelihood construction for usage with \code{\link[=bru]{bru()}}}
 \usage{
-like(family, formula = . ~ ., data = NULL, components = NULL,
-  mesh = NULL, E = NULL, Ntrials = NULL, samplers = NULL,
-  ips = NULL, domain = NULL, options = list())
+like(
+  formula = . ~ .,
+  family = "gaussian",
+  data = NULL,
+  mesh = NULL,
+  E = NULL,
+  Ntrials = NULL,
+  samplers = NULL,
+  ips = NULL,
+  domain = NULL,
+  include = NULL,
+  exclude = NULL,
+  allow_latent = FALSE,
+  allow_combine = FALSE,
+  options = list()
+)
+
+like_list(...)
+
+\method{like_list}{list}(object, envir = NULL, ...)
+
+\method{like_list}{bru_like}(..., envir = NULL)
+
+\method{[}{bru_like_list}(x, i)
 }
 \arguments{
-\item{family}{A character identifying a valid \link[INLA]{inla} likelihood. Alternatively 'cp' for Cox processes.}
+\item{formula}{a \code{formula} where the right hand side is a general R
+expression defines the predictor used in the model.}
 
-\item{formula}{a \link{formula} where the right hand side expression defines the predictor used in the optimization.}
+\item{family}{A string identifying a valid \code{INLA::inla} likelihood family.
+The default is
+\code{gaussian} with identity link. In addition to the likelihoods provided
+by inla (see \code{names(INLA::inla.models()$likelihood)})
+inlabru supports fitting latent Gaussian Cox
+processes via \code{family = "cp"}.
+As an alternative to \code{\link[=bru]{bru()}}, the \code{\link[=lgcp]{lgcp()}} function provides
+a convenient interface to fitting Cox processes.}
 
-\item{data}{Likelihood-specific data.}
-
-\item{components}{Components.}
+\item{data}{Likelihood-specific data, as a \code{data.frame} or
+\code{SpatialPoints[DataFrame]}
+object.}
 
 \item{mesh}{An inla.mesh object.}
 
 \item{E}{Exposure parameter for family = 'poisson' passed on to
-\link[INLA]{inla}. Special case if family is 'cp': rescale all integration
+\code{INLA::inla}. Special case if family is 'cp': rescale all integration
 weights by E. Default taken from \code{options$E}.}
 
 \item{Ntrials}{A vector containing the number of trials for the 'binomial'
@@ -33,70 +66,125 @@ Default taken from \code{options$Ntrials}.}
 
 \item{domain}{Named list of domain definitions.}
 
-\item{options}{list of global options overriding \link{bru.options}}
+\item{include}{Character vector of component labels that are needed by the
+predictor expression; Default: NULL (include all components that are not
+explicitly excluded)}
+
+\item{exclude}{Character vector of component labels that are not used by the
+predictor expression. The exclusion list is applied to the list
+as determined by the \code{include} parameter; Default: NULL (do not remove
+any components from the inclusion list)}
+
+\item{allow_latent}{logical. If \code{TRUE}, the latent state of each component is
+directly available to the predictor expression, with a \verb{_latent} suffix.
+This also makes evaluator functions with suffix \verb{_eval} available, taking
+parameters \code{main}, \code{group}, and \code{replicate}, taking values for where to
+evaluate the component effect that are different than those defined in the
+component definition itself.}
+
+\item{allow_combine}{logical; If \code{TRUE}, the predictor expression may
+involve several rows of the input data to influence the same row.
+(TODO: review what's needed to allow the result to also be of a different size)}
+
+\item{options}{A \link{bru_options} options object or a list of options passed
+on to \code{\link[=bru_options]{bru_options()}}}
+
+\item{\dots}{For \code{like_list.bru_like}, one or more \code{bru_like} objects}
+
+\item{object}{A list of \code{bru_like} objects}
+
+\item{envir}{An optional environment for the new \code{bru_like_list} object}
+
+\item{x}{\code{bru_like_list} object from which to extract element(s)}
+
+\item{i}{indices specifying elements to extract}
 }
 \value{
-A likelihood configuration which can be used to parameterize \link{bru}.
+A likelihood configuration which can be used to parameterize \code{\link[=bru]{bru()}}.
 }
 \description{
-Likelihood construction for usage with \link{bru}
+Likelihood construction for usage with \code{\link[=bru]{bru()}}
+}
+\details{
+\itemize{
+\item \code{like_list}: Combine a \code{bru_like} likelihoods
+into a \code{bru_like_list} object
+}
+
+\itemize{
+\item \code{like_list.list}: Combine a list of \code{bru_like} likelihoods
+into a \code{bru_like_list} object
+}
+
+\itemize{
+\item \code{like_list.bru_like}: Combine several \code{bru_like} likelihoods
+into a \code{bru_like_list} object
+}
 }
 \examples{
 \donttest{
-if (require("INLA", quietly = TRUE)) {
-  
-# The like function's main purpose is to set up models with multiple likelihoods. 
-# The following example generates some random covariates which are observed through
-# two different random effect models with different likelihoods
+if (bru_safe_inla()) {
 
-# Generate the data 
+  # The like function's main purpose is to set up models with multiple likelihoods.
+  # The following example generates some random covariates which are observed through
+  # two different random effect models with different likelihoods
 
-set.seed(123)
+  # Generate the data
 
-n1 = 200 
-n2 = 10
+  set.seed(123)
 
-x1 = runif(n1)
-x2 = runif(n2)
-z2 = runif(n2)
+  n1 <- 200
+  n2 <- 10
 
-y1 = rnorm(n1, mean = 2 * x1 + 3)
-y2 = rpois(n2, lambda = exp(2 * x2 + z2 + 3))
+  x1 <- runif(n1)
+  x2 <- runif(n2)
+  z2 <- runif(n2)
 
-df1 = data.frame(y = y1, x = x1)
-df2 = data.frame(y = y2, x = x2, z = z2)
+  y1 <- rnorm(n1, mean = 2 * x1 + 3)
+  y2 <- rpois(n2, lambda = exp(2 * x2 + z2 + 3))
 
-# Single likelihood models and inference using bru are done via
+  df1 <- data.frame(y = y1, x = x1)
+  df2 <- data.frame(y = y2, x = x2, z = z2)
 
-cmp1 = y ~ x + Intercept
-fit1 = bru(cmp1, family = "gaussian", data = df1)
-summary(fit1)
+  # Single likelihood models and inference using bru are done via
 
-cmp2 = y ~ x + z + Intercept
-fit2 = bru(cmp2, family = "poisson", data = df2)
-summary(fit2)
+  cmp1 <- y ~ -1 + Intercept(1) + x
+  fit1 <- bru(cmp1, family = "gaussian", data = df1)
+  summary(fit1)
 
-# A joint model has two likelihoods, which are set up using the like function
+  cmp2 <- y ~ -1 + Intercept(1) + x + z
+  fit2 <- bru(cmp2, family = "poisson", data = df2)
+  summary(fit2)
 
-lik1 = like("gaussian", formula = y ~ x + Intercept, data = df1)
-lik2 = like("poisson", formula = y ~ x + z + Intercept, data = df2)
+  # A joint model has two likelihoods, which are set up using the like function
 
-# The union of effects of both models gives the components needed to run bru
+  lik1 <- like("gaussian", formula = y ~ x + Intercept, data = df1)
+  lik2 <- like("poisson", formula = y ~ x + z + Intercept, data = df2)
 
-jcmp = y ~ x + z + Intercept
-jfit = bru(jcmp, lik1, lik2)
+  # The union of effects of both models gives the components needed to run bru
 
-# Compare the estimates
+  jcmp <- ~ x + z + Intercept
+  jfit <- bru(jcmp, lik1, lik2)
 
-p1 = ggplot() + gg(fit1$summary.fixed, bar = TRUE) + ylim(0, 4) + ggtitle("Model 1")
-p2 = ggplot() + gg(fit2$summary.fixed, bar = TRUE) + ylim(0, 4) + ggtitle("Model 2")
-pj = ggplot() + gg(jfit$summary.fixed, bar = TRUE) + ylim(0, 4) + ggtitle("Joint model")
+  # Compare the estimates
 
-multiplot(p1, p2, pj)
+  p1 <- ggplot() +
+    gg(fit1$summary.fixed, bar = TRUE) +
+    ylim(0, 4) +
+    ggtitle("Model 1")
+  p2 <- ggplot() +
+    gg(fit2$summary.fixed, bar = TRUE) +
+    ylim(0, 4) +
+    ggtitle("Model 2")
+  pj <- ggplot() +
+    gg(jfit$summary.fixed, bar = TRUE) +
+    ylim(0, 4) +
+    ggtitle("Joint model")
 
+  multiplot(p1, p2, pj)
 }
 }
 }
 \author{
-Fabian E. Bachl <\email{bachlfab@gmail.com}>
+Fabian E. Bachl \email{bachlfab@gmail.com}
 }

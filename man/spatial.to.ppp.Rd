@@ -7,9 +7,9 @@
 spatial.to.ppp(points, samplers)
 }
 \arguments{
-\item{points}{A SpatialPoints[DataFrame] object describing the point pattern.}
+\item{points}{A \code{SpatialPoints[DataFrame]} object describing the point pattern.}
 
-\item{samplers}{A SpatialPolygons[DataFrame] object describing the observation window.}
+\item{samplers}{A \code{SpatialPolygons[DataFrame]} object describing the observation window.}
 }
 \value{
 A spatstat \code{spatstat} \code{ppp} object
@@ -22,17 +22,20 @@ and the window. Lastly, the ppp() function is called to create the \code{ppp} ob
 \examples{
 
 \donttest{
-# Load Gorilla data
+if (require("spatstat.geom")) {
+  # Load Gorilla data
 
-data("gorillas", package = "inlabru")
+  data("gorillas", package = "inlabru")
 
-# Use nest locations and survey boundary to create a spatstat ppp object
+  # Use nest locations and survey boundary to create a spatstat ppp object
 
-gp <- spatial.to.ppp(gorillas$nests, gorillas$boundary)
-class(gp)
+  gp <- spatial.to.ppp(gorillas$nests, gorillas$boundary)
+  class(gp)
 
-# Plot it
+  # Plot it
 
-plot(gp)
+  plot(gp)
 }
+}
+
 }

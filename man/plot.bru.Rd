@@ -2,20 +2,22 @@
 % Please edit documentation in R/ggplot.R
 \name{plot.bru}
 \alias{plot.bru}
-\title{Plot method for posterior marginals estimated by \link{bru}}
+\title{Plot method for posterior marginals estimated by bru}
 \usage{
 \method{plot}{bru}(x, ...)
 }
 \arguments{
-\item{x}{a fitted \link{bru} model.}
+\item{x}{a fitted \code{\link[=bru]{bru()}} model.}
 
-\item{...}{A character naming the effect to plot, e.g. "Intercept".}
+\item{...}{A character naming the effect to plot, e.g. "Intercept". For random
+effects, adding \code{index = ...} plots the density for a single component of the
+latent model.}
 }
 \value{
 an object of class \code{gg}
 }
 \description{
-\link{bru} uses \link[INLA]{inla} to fit models. The latter estimates the posterior densities of
+\code{\link[=bru]{bru()}} uses \code{INLA::inla()} to fit models. The latter estimates the posterior densities of
 all random effects in the model. This function serves to access and plot the posterior
 densities in a convenient way.
 }
@@ -24,14 +26,13 @@ densities in a convenient way.
 \dontrun{
 
 # Generate some data and fit a simple model
-input.df <- data.frame(x=cos(1:10))
-input.df <- within(input.df, y <- 5 + 2*cos(1:10) + rnorm(10, mean=0, sd=0.1))
-fit <- bru(y ~ x, "gaussian", input.df)
+input.df <- data.frame(x = cos(1:10))
+input.df <- within(input.df, y <- 5 + 2 * cos(1:10) + rnorm(10, mean = 0, sd = 0.1))
+fit <- bru(y ~ x, family = "gaussian", data = input.df)
 summary(fit)
 
 # Plot the posterior of the model's x-effect
 plot(fit, "x")
-
 }
 
 }

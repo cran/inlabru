@@ -10,12 +10,17 @@ import.mrsea()
 The \link{mrsea} data set
 }
 \description{
-Load \link{mrsea} survey data from MRSea package and convert to spatial formats defined by the \link{sp} package.
+Load mrsea survey data from the MRSea package and convert to spatial formats defined by the \link{sp} package.
+Requires the MRSea package from \url{https://github.com/lindesaysh/MRSea}, and
+is normally only run by the package maintainer. For regular inlabru use of the data,
+use \code{data("MRSea", package = "inlabru")}, which does not require the MRSea package.
 }
 \examples{
-\dontrun{mrsea = import.mrsea();}
+\dontrun{
+mrsea <- import.mrsea()
+}
 }
 \author{
-Lindesay Scott-Hayward <\email{lass@st-andrews.ac.uk}>
+Lindesay Scott-Hayward \email{lass@st-andrews.ac.uk}
 }
 \keyword{internal}

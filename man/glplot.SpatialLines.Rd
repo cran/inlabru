@@ -14,35 +14,37 @@
 \item{...}{Parameters passed on to rgl.linestrips().}
 }
 \description{
-This function will calculate a cartesian representation of the lines provided 
+This function will calculate a cartesian representation of the lines provided
 and use rgl.linestrip() in order to render them.
 }
 \examples{
-\donttest{
-if (require("rgl", quietly = TRUE) &&
-    require("sphereplot", quietly = TRUE)) {
+\dontrun{
+if (bru_safe_inla() &&
+  require("rgl", quietly = TRUE) &&
+  require("sphereplot", quietly = TRUE)) {
 
-# Load pantropoical dolphin data
+  # Load pantropoical dolphin data
 
-data("mexdolphin", package = "inlabru")
+  data("mexdolphin", package = "inlabru")
 
-# Show the globe
+  # Show the globe
 
-globe()
+  globe()
 
-# Add mesh, ship transects and dolphin sightings stored
-# as inla.mesh, SpatialLines and SpatialPoints objects, respectively
+  # Add mesh, ship transects and dolphin sightings stored
+  # as inla.mesh, SpatialLines and SpatialPoints objects, respectively
 
-glplot(mexdolphin$mesh)
-glplot(mexdolphin$samplers)
-glplot(mexdolphin$points)
-
+  glplot(mexdolphin$mesh)
+  glplot(mexdolphin$samplers)
+  glplot(mexdolphin$points)
 }
 }
 }
 \seealso{
-Other inlabru RGL tools: \code{\link{globe}},
-  \code{\link{glplot.SpatialPoints}},
-  \code{\link{glplot.inla.mesh}}, \code{\link{glplot}}
+Other inlabru RGL tools: 
+\code{\link{globe}()},
+\code{\link{glplot.SpatialPoints}()},
+\code{\link{glplot.inla.mesh}()},
+\code{\link{glplot}()}
 }
 \concept{inlabru RGL tools}

@@ -4,13 +4,24 @@
 \alias{gg.inla.mesh}
 \title{Geom for inla.mesh objects}
 \usage{
-\method{gg}{inla.mesh}(data, color = NULL, alpha = NULL,
-  edge.color = "grey", interior = TRUE, int.color = "blue",
-  exterior = TRUE, ext.color = "black", crs = NULL, mask = NULL,
-  nx = 500, ny = 500, ...)
+\method{gg}{inla.mesh}(
+  data,
+  color = NULL,
+  alpha = NULL,
+  edge.color = "grey",
+  interior = TRUE,
+  int.color = "blue",
+  exterior = TRUE,
+  ext.color = "black",
+  crs = NULL,
+  mask = NULL,
+  nx = 500,
+  ny = 500,
+  ...
+)
 }
 \arguments{
-\item{data}{An \link[INLA]{inla.mesh} object.}
+\item{data}{An \link[INLA:inla.mesh.create]{inla.mesh} object.}
 
 \item{color}{A vector of scalar values to fill the mesh with colors. The length of the vector mus correspond to the number of mesh vertices.}
 
@@ -47,36 +58,44 @@ to plot the interpolation.
 }
 \examples{
 \donttest{
-# Load Gorilla data
-data("gorillas", package = "inlabru")
+if (bru_safe_inla()) {
 
-# Plot mesh using default edge colors
+  # Load Gorilla data
+  data("gorillas", package = "inlabru")
 
-ggplot() + gg(gorillas$mesh)
+  # Plot mesh using default edge colors
 
-# Don't show interior and exterior boundaries
+  ggplot() +
+    gg(gorillas$mesh)
 
-ggplot() + gg(gorillas$mesh, interior = FALSE, exterior = FALSE)
+  # Don't show interior and exterior boundaries
 
-# Change the edge colors
+  ggplot() +
+    gg(gorillas$mesh, interior = FALSE, exterior = FALSE)
 
-ggplot() + gg(gorillas$mesh, 
-              edge.color = "green",
-              int.color = "black",
-              ext.color = "blue"
-              )
+  # Change the edge colors
 
-# Use the x-coordinate of the vertices to colorize the triangles and
-# mask the plotted area by the survey boundary, i.e. only plot the inside
+  ggplot() +
+    gg(gorillas$mesh,
+      edge.color = "green",
+      int.color = "black",
+      ext.color = "blue"
+    )
 
-xcoord = gorillas$mesh$loc[,1]
-ggplot() + 
-  gg(gorillas$mesh, color = (xcoord-580), mask = gorillas$boundary) +
-  gg(gorillas$boundary)
+  # Use the x-coordinate of the vertices to colorize the triangles and
+  # mask the plotted area by the survey boundary, i.e. only plot the inside
+
+  xcoord <- gorillas$mesh$loc[, 1]
+  ggplot() +
+    gg(gorillas$mesh, color = (xcoord - 580), mask = gorillas$boundary) +
+    gg(gorillas$boundary)
+}
 }
 }
 \seealso{
-Other geomes for meshes: \code{\link{gg.inla.mesh.1d}},
-  \code{\link{gg}}, \code{\link{gm}}
+Other geomes for meshes: 
+\code{\link{gg.inla.mesh.1d}()},
+\code{\link{gg}()},
+\code{\link{gm}()}
 }
 \concept{geomes for meshes}
