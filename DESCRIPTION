@@ -1,7 +1,7 @@
 Package: inlabru
 Type: Package
 Title: Bayesian Latent Gaussian Modelling using INLA and Extensions
-Version: 2.3.1
+Version: 2.4.0
 Authors@R: c(
   person("Finn", "Lindgren", email = "finn.lindgren@gmail.com",
          role = c("aut", "cre", "cph"),
@@ -20,7 +20,9 @@ Authors@R: c(
          role = c("ctb", "dtc", "cph"),
          comment = "Lindesay Scott-Howard provided MRSea data import code"),
   person("Seaton", "Andy", email = "andy.e.seaton@gmail.com", role = c("ctb"),
-         comment = "Andy Seaton provided testing and bugfixes")
+         comment = "Andy Seaton provided testing and bugfixes"),
+  person("Suen", "Man Ho", email = "M.H.Suen@sms.ed.ac.uk", role = c("ctb", "cph"),
+         comment = "Man Ho Suen contributed features for aggregated responses")
   )
 URL: http://www.inlabru.org, https://inlabru-org.github.io/inlabru/
 BugReports: https://github.com/inlabru-org/inlabru/issues
@@ -38,14 +40,15 @@ Description: Facilitates spatial and general latent Gaussian modeling using
   <doi:10.1111/2041-210X.13168>.
 License: GPL (>= 2)
 Additional_repositories: https://inla.r-inla-download.org/R/testing
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
-Depends: ggplot2, methods, R (>= 3.5), sp (>= 1.4-5), stats
-Imports: Matrix, rgdal (>= 1.5.8), rgeos, utils, withr
-Suggests: covr, dplyr, ggmap, ggpolypath, graphics, INLA (>= 20.06.18),
-        knitr, maptools, mgcv, patchwork, raster, RColorBrewer, rgl,
-        rmarkdown, shiny, sn, spatstat.geom, spatstat.core,
-        spatstat.data, spatstat (>= 2.0-0), sphereplot, testthat
+Depends: methods, R (>= 3.5), sp (>= 1.4-5), stats
+Imports: plyr, Matrix, rgdal (>= 1.5.8), rgeos, rlang, utils, withr
+Suggests: covr, dplyr, ggmap, ggplot2, ggpolypath, graphics, INLA (>=
+        21.08.31), knitr, maptools, mgcv, patchwork, raster,
+        RColorBrewer, rgl, rmarkdown, shiny, sn, spatstat.geom,
+        spatstat.core, spatstat.data, spatstat (>= 2.0-0), sphereplot,
+        testthat
 Config/testthat/parallel: true
 Config/testthat/edition: 3
 Collate: '0_inlabru_envir.R' 'bru.covariate.R' 'bru.gof.R'
@@ -63,7 +66,7 @@ Collate: '0_inlabru_envir.R' 'bru.covariate.R' 'bru.gof.R'
 VignetteBuilder: knitr
 BuildVignettes: true
 NeedsCompilation: no
-Packaged: 2021-03-21 22:59:55 UTC; flindgre
+Packaged: 2021-12-18 01:43:25 UTC; flindgre
 Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     Finn Lindgren continued development of the main code),
   Fabian E. Bachl [aut, cph] (Fabian Bachl wrote the main code),
@@ -73,7 +76,9 @@ Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     method),
   Lindesay Scott-Howard [ctb, dtc, cph] (Lindesay Scott-Howard provided
     MRSea data import code),
-  Seaton Andy [ctb] (Andy Seaton provided testing and bugfixes)
+  Seaton Andy [ctb] (Andy Seaton provided testing and bugfixes),
+  Suen Man Ho [ctb, cph] (Man Ho Suen contributed features for aggregated
+    responses)
 Maintainer: Finn Lindgren <finn.lindgren@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-03-22 23:00:12 UTC
+Date/Publication: 2021-12-19 01:50:09 UTC

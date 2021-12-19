@@ -10,6 +10,7 @@ knitr::opts_chunk$set(
 
 ## ----setup, include = FALSE---------------------------------------------------
 library(inlabru)
+library(ggplot2)
 
 ## -----------------------------------------------------------------------------
 lambda <- function(u, gamma) {
@@ -52,7 +53,9 @@ D2log_p <- function(u, y, gamma) {
 
 ## -----------------------------------------------------------------------------
 g <- 1
-y <- c(0, 1, 2)
+y <- c(0,1,2)
+y <- c(0, 0, 0,0,0)
+y <- rpois(5, 5)
 mu_quad <- uniroot(D1log_p, lambda_inv((1 + sum(y)) / (g + length(y)) * c(1/10, 10), gamma = g),
                    y = y, gamma = g)$root
 sd_quad <- (-D2log_p(mu_quad, y = y, gamma = g))^-0.5
@@ -147,4 +150,73 @@ ggplot() +
                                      gamma = g), lty = "Bayes mean")) +
   geom_vline(mapping = aes(xintercept = lambda_inv(lambda0, gamma = g), lty = "Bayes mode")) +
   geom_vline(mapping = aes(xintercept = lambda_inv(mean(y), gamma = g), lty = "Plain mean"))
+
+## -----------------------------------------------------------------------------
+ggplot() +
+  xlim(
+    lambda(mu_quad - 4 * sd_quad, gamma = g),
+    lambda(mu_quad + 4 * sd_quad, gamma = g)
+  ) +
+  xlab("lambda") +
+  ylab("CDF") +
+  geom_function(
+    fun = pgamma,
+    args = list(shape = 1 + sum(y), rate = g + length(y)),
+    mapping = aes(col = "Theory"),
+    n = 1000
+  ) +
+  geom_function(
+    fun = function(x) {
+      pnorm(lambda_inv(x, gamma = g), mean = mu_quad, sd = sd_quad)
+    },
+    mapping = aes(col = "Quadratic"),
+    n = 1000
+  ) +
+  geom_function(
+    fun = function(x) {
+      pnorm(lambda_inv(x, gamma = g), mean = mu_quad, sd = sd_lin)
+      },
+    mapping = aes(col = "Linearised"),
+    n = 1000
+    ) +
+  geom_vline(mapping = aes(xintercept = (1 + sum(y)) / (g + length(y)),
+                           lty = "Bayes mean")) +
+  geom_vline(mapping = aes(xintercept = lambda0, lty = "Bayes mode")) +
+  geom_vline(mapping = aes(xintercept = mean(y), lty = "Plain mean"))
+
+## -----------------------------------------------------------------------------
+ggplot() +
+  xlim(
+    lambda_inv(lambda0, gamma = g) - 4 * sd_quad,
+    lambda_inv(lambda0, gamma = g) + 4 * sd_quad
+  ) +
+  xlab("u") +
+  ylab("CDF") +
+  geom_function(
+    fun = function(x) {
+      pgamma(lambda(x, gamma = g), shape = 1 + sum(y), rate = g + length(y))
+    },
+    mapping = aes(col = "Theory"),
+    n = 1000
+  ) +
+  geom_function(
+    fun = pnorm,
+    args = list(mean = mu_quad, sd = sd_quad),
+    mapping = aes(col = "Quadratic"),
+    n = 1000
+  ) +
+  geom_function(
+    fun = pnorm,
+    args = list(mean = mu_quad, sd = sd_lin),
+    mapping = aes(col = "Linearised"),
+    n = 1000
+  ) +
+  geom_vline(mapping = aes(
+    xintercept = lambda_inv((1 + sum(y)) / (g + length(y)),
+                            gamma = g),
+    lty = "Bayes mean")) +
+  geom_vline(mapping = aes(xintercept = lambda_inv(lambda0, gamma = g),
+                           lty = "Bayes mode")) +
+  geom_vline(mapping = aes(xintercept = lambda_inv(mean(y), gamma = g),
+                           lty = "Plain mean"))
 

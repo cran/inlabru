@@ -6,4 +6,5 @@ knitr::opts_chunk$set(
 
 ## ----setup, include = FALSE---------------------------------------------------
 library(inlabru)
+library(ggplot2)
 
