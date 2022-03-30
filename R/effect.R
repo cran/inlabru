@@ -330,7 +330,7 @@ component <- function(...) {
 #'
 #' @examples
 #' \donttest{
-#' if (require("INLA", quietly = TRUE)) {
+#' if (bru_safe_inla(quietly = TRUE)) {
 #'
 #'   # As an example, let us create a linear component. Here, the component is
 #'   # called "myEffectOfX" while the covariate the component acts on is called "x":
@@ -341,7 +341,7 @@ component <- function(...) {
 #'   # A more complicated component:
 #'   cmp <- component("myEffectOfX",
 #'     main = x,
-#'     model = inla.spde2.matern(inla.mesh.1d(1:10))
+#'     model = INLA::inla.spde2.matern(INLA::inla.mesh.1d(1:10))
 #'   )
 #'
 #'   # Compound fixed effect component, where x and z are in the input data.
@@ -1472,7 +1472,7 @@ bru_mapper.default <- function(mapper,
     "ibm_amatrix", "ibm_amatrix_inla",
     "ibm_valid_input", "ibm_valid_input_inla"
   ) %in%
-    ...names())) {
+    names(list(...)))) {
     warning(
       paste0(
         "Deprecated use of named method arguments for 'bru_mapper'.\n",
@@ -1487,7 +1487,7 @@ bru_mapper.default <- function(mapper,
         "ibm_inla_subset",
         "ibm_valid_input"
       ),
-      ...names()
+      names(list(...))
     )
     methods <- list(...)[method_names]
   }

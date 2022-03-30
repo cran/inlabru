@@ -1,7 +1,7 @@
 Package: inlabru
 Type: Package
 Title: Bayesian Latent Gaussian Modelling using INLA and Extensions
-Version: 2.5.0
+Version: 2.5.2
 Authors@R: c(
   person("Finn", "Lindgren", email = "finn.lindgren@gmail.com",
          role = c("aut", "cre", "cph"),
@@ -67,7 +67,7 @@ Collate: '0_inlabru_envir.R' 'bru.covariate.R' 'bru.gof.R'
 VignetteBuilder: knitr
 BuildVignettes: true
 NeedsCompilation: no
-Packaged: 2022-03-21 14:07:11 UTC; flindgre
+Packaged: 2022-03-30 15:39:40 UTC; flindgre
 Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     Finn Lindgren continued development of the main code),
   Fabian E. Bachl [aut, cph] (Fabian Bachl wrote the main code),
@@ -82,4 +82,4 @@ Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     responses)
 Maintainer: Finn Lindgren <finn.lindgren@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-03-21 15:50:13 UTC
+Date/Publication: 2022-03-30 16:20:05 UTC
