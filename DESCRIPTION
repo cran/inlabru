@@ -1,7 +1,7 @@
 Package: inlabru
 Type: Package
 Title: Bayesian Latent Gaussian Modelling using INLA and Extensions
-Version: 2.5.3
+Version: 2.6.0
 Authors@R: c(
   person("Finn", "Lindgren", email = "finn.lindgren@gmail.com",
          role = c("aut", "cre", "cph"),
@@ -22,7 +22,7 @@ Authors@R: c(
   person("Seaton", "Andy", email = "andy.e.seaton@gmail.com", role = c("ctb"),
          comment = "Andy Seaton provided testing and bugfixes"),
   person("Suen", "Man Ho", email = "M.H.Suen@sms.ed.ac.uk", role = c("ctb", "cph"),
-         comment = "Man Ho Suen contributed features for aggregated responses and vignett updates"),
+         comment = "Man Ho Suen contributed features for aggregated responses and vignette updates"),
   person("Roudier", "Pierre", email = "", role = c("ctb", "cph"),
          comment = "Pierre Roudier contributed general quantile summaries"),
   person("Meehan", "Tim", email = "tmeeha@gmail.com", role = c("ctb", "cph"),
@@ -48,12 +48,12 @@ RoxygenNote: 7.2.1
 Encoding: UTF-8
 Depends: methods, R (>= 3.5), sp (>= 1.4-5), stats
 Imports: MatrixModels, magrittr, Matrix, patchwork, plyr, rgdal (>=
-        1.5.8), rgeos, rlang, utils, withr
+        1.5.8), rgeos, rlang, sf, utils, withr
 Suggests: covr, dplyr, ggmap, ggplot2, ggpolypath, graphics, INLA (>=
         21.08.31), knitr, maps, maptools, mgcv, raster, RColorBrewer,
-        rgl, rmarkdown, scales, sf, shiny, sn, spatstat.geom,
+        rgl, rmarkdown, scales, shiny, sn, spatstat.geom,
         spatstat.core, spatstat.data, spatstat (>= 2.0-0), sphereplot,
-        splancs, testthat, tidyr
+        splancs, terra, testthat, tidyr, DiagrammeR
 Config/testthat/parallel: true
 Config/testthat/edition: 3
 Collate: '0_inlabru_envir.R' 'bru.covariate.R' 'bru.gof.R'
@@ -63,17 +63,18 @@ Collate: '0_inlabru_envir.R' 'bru.covariate.R' 'bru.gof.R'
         'data.mrsea.R' 'data.robins_subset.R' 'data.seals.R'
         'data.shrimp.R' 'data.toygroups.R' 'deltaIC.R' 'deprecated.R'
         'dsdata.R' 'dsmdata.R' 'dsmdata.tools.R' 'effect.R'
-        'environment.R' 'fmesher_crs.R' 'fmesher_utils.R' 'ggplot.R'
-        'inla.R' 'inlabru.R' 'integration.R' 'local_testthat.R'
-        'mappers.R' 'mesh.R' 'model.R' 'nlinla.R' 'plotsample.R'
-        'prediction.R' 'rgl.R' 'sampling.R' 'shapefile.R' 'spatstat.R'
+        'environment.R' 'fmesher_crs.R' 'fmesher_sf_mesh.R'
+        'fmesher_sp_mesh.R' 'fmesher_utils.R' 'ggplot.R' 'inla.R'
+        'inlabru.R' 'integration.R' 'local_testthat.R' 'mappers.R'
+        'mesh.R' 'model.R' 'nlinla.R' 'plotsample.R' 'prediction.R'
+        'rgl.R' 'sampling.R' 'sf_utils.R' 'shapefile.R' 'spatstat.R'
         'spde.R' 'stack.R' 'track_plotting.R' 'transformation.R'
         'utils.R'
 VignetteBuilder: knitr
 BuildVignettes: true
 LazyData: false
 NeedsCompilation: no
-Packaged: 2022-09-05 00:15:33 UTC; flindgre
+Packaged: 2022-10-24 07:31:13 UTC; flindgre
 Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     Finn Lindgren continued development of the main code),
   Fabian E. Bachl [aut, cph] (Fabian Bachl wrote the main code),
@@ -85,11 +86,11 @@ Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     MRSea data import code),
   Seaton Andy [ctb] (Andy Seaton provided testing and bugfixes),
   Suen Man Ho [ctb, cph] (Man Ho Suen contributed features for aggregated
-    responses and vignett updates),
+    responses and vignette updates),
   Roudier Pierre [ctb, cph] (Pierre Roudier contributed general quantile
     summaries),
   Meehan Tim [ctb, cph] (Tim Meehan contributed the SVC vignette and
     robins data)
 Maintainer: Finn Lindgren <finn.lindgren@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-09-05 07:20:07 UTC
+Date/Publication: 2022-10-24 09:55:08 UTC

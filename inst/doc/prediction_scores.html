@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Finn Lindgren" />
+
+
+<title>Prediction scores</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Prediction scores</h1>
+<h4 class="author">Finn Lindgren</h4>
+
+
+
+<div id="proper-posterior-prediction-scores" class="section level2">
+<h2>Proper posterior prediction scores</h2>
+<p>A prediction <strong>score</strong> <span class="math inline">\(S(F,y)\)</span> evaluates some measure of
+<strong>closeness</strong> between a prediction distribution identified
+by <span class="math inline">\(F\)</span>, and an observed value <span class="math inline">\(y\)</span>.</p>
+<div id="a-basic-score-and-motivating-remarks" class="section level3">
+<h3>A basic score, and motivating remarks</h3>
+<p>A common score is the <strong>Squared Error</strong>, <span class="math display">\[
+S_\text{SE}(F,y) = [y - \mathbb{E}_F(Y)]^2,
+\]</span> and we would like predictions to have low values for <span class="math inline">\(S_\text{SE}(F,y)\)</span>, indicating a “good”
+prediction, in that specific sense that puts a penalty on the squared
+deviation of the prediction mean from the true observed value. We can
+imagine constructing other such scoring functions that penalise other
+aspects of the prediction.</p>
+<p>A score where “lower is better” is called negatively oriented, and a
+score where “higher is better” is called positively oriented. One can
+always turn one type of score into the other by changing the sign, so to
+simplify the presentation, we’ll make all scores be negatively oriented,
+like the squared error.</p>
+<p>We often care about the prediction uncertainty and not just the mean
+(or at least we <em>should</em> care!). Just adding a prediction
+variance penalty to the squared error wouldn’t be useful, as we could
+then construct a new, “better”, prediction by reducing the stated
+prediction variance to zero. This would understate the real prediction
+uncertainty, so wouldn’t be a fair scoring approach for comparing
+different prediction models. In the next section, we make this fairness
+idea more precise.</p>
+</div>
+<div id="proper-and-strictly-proper-scores" class="section level3">
+<h3>Proper and strictly proper scores</h3>
+<p>The expected value under a distribution identified by <span class="math inline">\(G\)</span> is denoted <span class="math inline">\(S(F,G):=\mathbb{E}_{Y\sim F}[S(F,Y)]\)</span>. For
+a negatively oriented score, we seek scoring functions that are
+<strong>fair</strong>, in the sense that one cannot, on average, make a
+better prediction that that which generated the data. This requires
+<span class="math inline">\(S(F,G)\geq S(G,G)\)</span> for all
+predictive distributions <span class="math inline">\(F\)</span> and any
+distribution <span class="math inline">\(G\)</span>. Such scores are
+call <strong>proper</strong>. If in addition, equality of the score
+expectations only hold when <span class="math inline">\(F=G\)</span>,
+the score is <strong>strictly proper</strong>.</p>
+<p>Non-strict proper scores ignore some aspect of the prediction,
+typically by only being sensitive to some summary information, such as
+the mean, median, and/or variance.</p>
+<p>It’s notable that proper scores retain their properness under affine
+transformations, with just potential changes in whether they are
+positively or negatively oriented. If <span class="math inline">\(S(F,y)\)</span> is a proper score, then <span class="math display">\[
+S&#39;(F,y) = a + b S(F,y),\quad a,b\in\mathbb{R},
+\]</span> is also a proper score, with the same orientation if <span class="math inline">\(b&gt;0\)</span> and the opposite orientation if
+<span class="math inline">\(b&lt;0\)</span>. The degenerate case <span class="math inline">\(b=0\)</span> gives the score <span class="math inline">\(a\)</span> to all predictions, which is
+technically a proper score (you cannot to better than an ideal
+prediction), but a useless one (an ideal prediction is no better than
+any other prediction).</p>
+</div>
+<div id="examples" class="section level3">
+<h3>Examples</h3>
+<ul>
+<li><p>log-score: <span class="math inline">\(S_\text{log}(F,y) =
+-\log\{p_F(y)\}\)</span>, where <span class="math inline">\(p_F(y)\)</span> is a predictive pdf or pmf for
+<span class="math inline">\(y\)</span>, is a strictly proper
+score.</p></li>
+<li><p>Squared Error: <span class="math inline">\(S_\text{SE}(F,y) = [y
+- \mathbb{E}_F(Y)]^2\)</span> is a proper score</p></li>
+<li><p>Brier score:</p>
+<ul>
+<li>Binary events: <span class="math display">\[S_\text{Brier}(F,z) = [z
+- \mathbb{P}_F(Z = 1)]^2,\]</span> where <span class="math inline">\(Z\in\{0,1\}\)</span> is a binary event indicator,
+is a strictly proper score for the event prediction, but non-strict with
+respect to any underlying outcome <span class="math inline">\(y\)</span>
+generating the event indicator, e.g. via <span class="math inline">\(z=I(y=0)\)</span>.</li>
+<li>Class indicator events: if <span class="math inline">\(y\in\{1,\dots,K\}\)</span> is a class category
+outcome, the Brier score can be generalised to <span class="math display">\[S_\text{MultiBrier}(F,y) = \sum_{k=1}^K [I(y = k)
+- \mathbb{P}_F(Y=k)]^2\]</span> which can be seen as the Squared Error
+for the Multinomial prediction model for <span class="math inline">\(z_k=I(y=k)\)</span>, with <span class="math inline">\(\{z_1,\dots,z_K\}\sim\text{Multinomial}(1,\{p_1,\dots,p_K\})\)</span>,
+where <span class="math inline">\(p_k=\mathbb{P}_F(Y=k)\)</span>.
+Sometimes, the sum is normalised by <span class="math inline">\(1/K\)</span>. This generalised Brier score is a
+proper score.</li>
+</ul></li>
+<li><p>Dawid-Sebastiani: <span class="math display">\[S_\text{DS}(F,y)=[y - \mathbb{E}_F(Y)]^2 /
+\mathbb{V}_F(Y) + \log[\mathbb{V}_F(Y)]\]</span> is a proper score. It’s
+derived from the strictly proper log-score of a Gaussian prediction, but
+it’s also a non-strict proper score for other distributions. It has the
+advantage that it only involves the predictive mean and variance, making
+it computable also in cases when log-densities are hard to obtain. Since
+it’s based on the symmetric Gaussian distribution, it tends to be
+affected by skewness, so should be applied with care in such
+cases.</p></li>
+<li><p>Absolute (Median) Error: <span class="math inline">\(S_\text{AE}(F,y)=|y - \text{median}_F|\)</span> is
+a proper score, with expectation minimised when the medians of <span class="math inline">\(F\)</span> and <span class="math inline">\(G\)</span> match. Note that <span class="math inline">\(|y-\mathbb{E}_F(Y)|\)</span>, the absolute error
+with respect to the <em>expectation</em>, is <em>not</em> a proper
+score! Another way of expressing this is that if <span class="math inline">\(|y-m_F|\)</span> is a proper score <em>with
+respect to the median</em>, i.e. it is proper when <span class="math inline">\(m_F\)</span> is taken to be the median of <span class="math inline">\(F\)</span>, and not some other point prediction.
+In the applied literature, this distinction is often overlooked, and the
+predictive mean is inserted into both the SE and AE scores, making the
+resulting AE score comparisons less clear than they could be.</p></li>
+<li><p>CRPS (Continuous Ranked Probability Score):</p>
+<p><span class="math display">\[
+S_\text{CRPS}(F,y)=
+  \int_{-\infty}^\infty [\mathbb{P}_F(Y \leq x) - I(y \leq x)]^2
+\,\mathrm{d}x
+\]</span> This is a strictly proper score, related to the absolute error
+of point predictions.</p></li>
+</ul>
+<p>Other scores include the Interval score that is minimised for short
+prediction intervals with the intended coverage probability, and the
+Quantile score, that generalises the Absolute Median Error to other
+quantiles than the median.</p>
+</div>
+<div id="improper-scores" class="section level3">
+<h3>Improper scores</h3>
+<p>We’ve seen that some scores are <em>strictly</em> proper, and others
+are only proper scores, sensitive to specific aspects of the predictive
+distribution, such as mean, median, and/or variance.</p>
+<p>In contrast, <em>improper</em> scores do not fulfil the fairness
+idea. Such scores include the the aforementioned penalised squared
+error, <span class="math inline">\([y-\mathbb{E}(Y)]^2+\mathbb{V}_F(Y)\)</span>, but
+also the probability/density function, <span class="math inline">\(p_F(y)\)</span>. The latter might come as a
+surprise, as the log-score <em>is</em> proper.</p>
+</div>
+<div id="mean-errorscore" class="section level3">
+<h3>Mean error/score</h3>
+<p>Up to this point, we only considered individual scores. When
+summarising predictions <span class="math inline">\(\{F_i\}\)</span> for
+a collection of observations <span class="math inline">\(\{y_i\}\)</span>, we usually compute the mean
+score, <span class="math display">\[
+S(\{F_i\},\{y_i\}) = \frac{1}{N}\sum_{i=1}^N S(F_i,y_i) .
+\]</span></p>
+<p>When comparing two different prediction models <span class="math inline">\(F\)</span> and <span class="math inline">\(F&#39;\)</span>, the scores are dependent with
+respect to the observations <span class="math inline">\(y_i\)</span>.
+This means that in order to more easily handle the score variability in
+the comparison, we should treat it as a paired sample problem. The
+pairwise score differences are given by <span class="math display">\[
+S(F_i,F&#39;_i,y_i) = S(F_i,y_i) - S(F&#39;_i,y_i) .
+\]</span> It’s also much more reasonable to make conditional
+independence assumptions about these differences, than for the plain
+score values <span class="math inline">\(S(F_i,y_i)\)</span>; <span class="math display">\[
+\mathbb{V}_{\{y_i\}\sim G}\left[\frac{1}{N}\sum_{i=1}^N
+S(F_i,y_i)\right] =
+\frac{1}{N^2}\sum_{i=1}^N\sum_{j=1}^N\mathbb{C}_{\{y_i\}\sim
+G}\left[S(F_i,y_i),S(F_j,y_j)\right]
+\]</span> but <span class="math display">\[
+\mathbb{V}_{\{y_i\}\sim G}\left[\frac{1}{N}\sum_{i=1}^N S(F_i,y_i) -
+S(F&#39;_i,y_i)\right] \approx
+\frac{1}{N^2}\sum_{i=1}^N\mathbb{V}_{y_i\sim G_i}\left[ S(F_i,y_i) -
+S(F&#39;_i,y_i)\right].
+\]</span></p>
+<p>Note that taking the average of prediction scores, or averages of
+prediction score differences, is quite different from assessing summary
+statistics of the collection of predictions, since the scores are
+individual for each observation; we’re not assessing the collective
+value distribution, as that might be misleading. For example, consider a
+spatial model where he estimated procession has an empirical
+distribution of the predictive means that matches that of the observed
+data. Scores based on the marginal empirical distribution would not be
+able to detect if the <em>location</em> of the values is maximally
+different to the actual locations, whereas averages of individual scores
+would be sensitive to this.</p>
+</div>
+</div>
+<div id="poisson-model-example" class="section level2">
+<h2>Poisson model example</h2>
+<p>Consider a model with Poisson outcomes <span class="math inline">\(y\)</span>, conditionally on a log-linear
+predictor <span class="math inline">\(\lambda=\exp(\eta)\)</span>, where
+<span class="math inline">\(\eta\)</span> is some linear expression in
+latent variables.</p>
+<p>The posterior predictive distributions are Poisson mixture
+distributions across the posterior distribution of <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(p(\lambda|\text{data})\)</span>.</p>
+<div id="moment-scores" class="section level3">
+<h3>Moment scores</h3>
+<p>For the Squared Error and Dawid-Sebastiani scores, we’ll need the
+posterior expectation and variance: <span class="math display">\[
+  \mathbb{E}(Y|\text{data}) =
+\mathbb{E}[\mathbb{E}(Y|\lambda,\text{data}) | \text{data}] =
+\mathbb{E}(\lambda | \text{data})
+\]</span> and <span class="math display">\[
+  \mathbb{V}(Y|\text{data}) =
+\mathbb{E}[\mathbb{V}(Y|\lambda,\text{data}) | \text{data}] +
+    \mathbb{V}[\mathbb{E}(Y | \text{data}) | \text{data}]
+     = \mathbb{E}[\lambda | \text{data}] + \mathbb{V}[\lambda |
+\text{data}]
+\]</span> i.e. the sum of the posterior mean and variance for
+lambda.</p>
+<p>The SE and DS scores are therefore relatively easy to compute after
+estimating a model with <code>inlabru</code>. You just need to estimate
+the posterior mean and variance with <code>predict()</code> for each
+test data point. If <code>eta</code> is an expression for the linear
+predictor, and <code>newdata</code> holds the covariate information for
+the prediction points, run</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata, <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">exp</span>(eta), <span class="at">n.samples =</span> <span class="dv">2000</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>post_E <span class="ot">&lt;-</span> pred<span class="sc">$</span>mean</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>post_Var <span class="ot">&lt;-</span> pred<span class="sc">$</span>mean <span class="sc">+</span> pred<span class="sc">$</span>sd<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>SE_score <span class="ot">&lt;-</span> (newdata<span class="sc">$</span>y <span class="sc">-</span> post_E)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>DS_score <span class="ot">&lt;-</span> (newdata<span class="sc">$</span>y <span class="sc">-</span> post_E)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> post_Var <span class="sc">+</span> <span class="fu">log</span>(post_Var)</span></code></pre></div>
+</div>
+<div id="log-probability-and-log-density-scores" class="section level3">
+<h3>Log-Probability and log-density scores</h3>
+<p>The full log-score can actually also be estimated/computed in a
+similar way. We seek, for a fixed observation y, <span class="math inline">\(\log[\mathbb{P}(Y = y | \text{data})]\)</span> The
+probability is <span class="math display">\[
+  \mathbb{P}(Y = y | \text{data}) = \mathbb{E}[\mathbb{P}(Y = y |
+\lambda, \text{data}) | \text{data}],
+\]</span> so we can estimate it using <code>predict()</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>  pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                  newdata,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">dpois</span>(y, <span class="at">rate =</span> <span class="fu">exp</span>(eta)),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">n.samples =</span> <span class="dv">2000</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  log_score <span class="ot">&lt;-</span> <span class="fu">log</span>(pred<span class="sc">$</span>mean)</span></code></pre></div>
+<p>to estimate the log_score (increase <code>n.samples</code> if needed
+for sufficiently small Monte Carlo error).</p>
+</div>
+<div id="crps" class="section level3">
+<h3>CRPS</h3>
+<p>Yet another option would be to use the CRPS, which for each
+prediction value <span class="math inline">\(y_i\)</span> would be <span class="math display">\[
+S_\text{CRPS}(F_i,y_i) = \sum_{k=0}^\infty [\mathbb{P}(Y_i \leq k
+|\text{data}) - I(y_i \leq k)]^2
+\]</span> For this, one would first need to get <span class="math inline">\(\mathbb{P}(Y \leq k | \text{data})\)</span> from a
+predict call with <code>ppois(k, rate = exp(eta))</code>, for a vector
+<span class="math inline">\(k=0,1\dots,K\)</span>, for each <span class="math inline">\(y_i\)</span>, for some sufficiently large <span class="math inline">\(K&gt;\max_i{y_i}\)</span> for the remainder to be
+negligible. However, to avoid repeated <code>predict()</code> calls for
+each <span class="math inline">\(y_i\)</span>, the storage requirements
+is of order <span class="math inline">\((K+1) \times N\times
+N_\text{samples}\)</span>. To avoid that, one option would be to
+reformulate the estimator into a recursive estimator, so that batches of
+simulations could be used to iteratively compute the estimator.</p>
+<p>A basic estimator can proceed as follows:</p>
+<p>Define <span class="math inline">\(K\geq K_0=\max_i(y_i)\)</span>
+sufficiently large for the posterior predictive probability above <span class="math inline">\(K\)</span> to be negligible. Perhaps a value like
+<span class="math inline">\(K=K_0+4\sqrt{K_0}\)</span> might be
+sufficient. You can check afterwards, and change if needed.</p>
+<ol style="list-style-type: decimal">
+<li>Simulate samples from <span class="math inline">\(\lambda^{(j)}\sim
+p(\lambda|\text{data})\)</span> using <code>generate()</code> (size
+<span class="math inline">\(N\times N_\text{samples}\)</span>).</li>
+<li>For each <span class="math inline">\(i=1,\dots,N\)</span>, use the
+samples to estimate the residuals <span class="math inline">\(r_{ik}=\mathbb{P}(Y\leq k|\text{data})-I(y_i\leq
+k)\)</span>, for <span class="math inline">\(k\in
+0,1,2,\dots,K\)</span>, with</li>
+</ol>
+<p><span class="math display">\[
+  \widehat{p}_{ik} = \frac{1}{N_\text{samples}}
+\sum_{j=1}^{N_\text{samples}}
+  \{
+  \mathbb{P}(Y\leq k|\lambda^{(j)}_i)
+  -
+  I(y_i\leq k)
+  \} .
+  \]</span> 3. Compute</p>
+<p><span class="math display">\[
+S_\text{CRPS}(F_i,y_i) \approx \sum_{k=0}^{K} r_{ik}^2
+  \]</span></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>max_K <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">max</span>(y)) <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fu">max</span>(y)) <span class="co"># some large value, so that 1-F(K) is small</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">generate</span>(fit, newdata,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">formula =</span> <span class="sc">~</span> {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                  lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(eta)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                  k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, max_K)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">do.call</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                    cbind,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">lapply</span>(<span class="fu">seq_along</span>(y),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                           <span class="cf">function</span>(i) {</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                             F <span class="ot">&lt;-</span> <span class="fu">ppois</span>(k, <span class="at">rate =</span> lambda[i])</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">data.frame</span>(</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                               <span class="at">k =</span> <span class="fu">c</span>(k, k),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>                               <span class="at">i =</span> <span class="fu">c</span>(i, i),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                               <span class="at">type =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;F&quot;</span>, <span class="st">&quot;residual&quot;</span>), <span class="at">each =</span> <span class="fu">length</span>(F)),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                               <span class="at">value =</span> <span class="fu">c</span>(F, F <span class="sc">-</span> (y[i] <span class="sc">&lt;=</span> k))</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                             )</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                           }))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">n.samples =</span> <span class="dv">2000</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>F_estimate <span class="ot">&lt;-</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  (pred <span class="sc">%&gt;%</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>     <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;F&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarise</span>(<span class="at">F =</span> <span class="fu">sum</span>(mean), <span class="at">groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>     <span class="fu">pull</span>(F))</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>crps_score <span class="ot">&lt;-</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  (pred <span class="sc">%&gt;%</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>     <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;residual&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarise</span>(<span class="at">crps =</span> <span class="fu">sum</span>(mean<span class="sc">^</span><span class="dv">2</span>), <span class="at">groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>     <span class="fu">pull</span>(crps))</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that the cutoff point K has nearly probability mass 1 below it, for all i:</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(F_estimate)</span></code></pre></div>
+</div>
+</div>
+<div id="posterior-expectation-of-conditional-scores" class="section level2">
+<h2>Posterior expectation of conditional scores</h2>
+<p>In some cases, one might be tempted to consider posterior
+distribution properties of conditional predictive scores, e.g. the
+posterior expectation <span class="math inline">\(\mathbb{E}_{\lambda|\text{data}}[S(F_\lambda,
+y)]\)</span> for <span class="math inline">\(S(F_\lambda, y)\)</span>
+under the posterior distribution for <span class="math inline">\(\lambda\)</span> in the Poisson model.</p>
+<p>For Squared Error, <span class="math display">\[
+\begin{aligned}
+\mathbb{E}_{\lambda|\text{data}}[(y - \lambda)^2] &amp;=
+\mathbb{E}_{\lambda|\text{data}}[\{y - \mathbb{E}(\lambda|\text{data}) +
+\mathbb{E}(\lambda|\text{data}) - \lambda\}^2] \\
+&amp;=
+[y - \mathbb{E}(\lambda|\text{data})]^2 +
+\mathbb{E}_{\lambda|\text{data}}(\mathbb{E}(\lambda|\text{data}) -
+\lambda\}^2] \\
+&amp;=
+[y - \mathbb{E}(\lambda|\text{data})]^2 +
+\mathbb{V}(\lambda|\text{data}) .
+\end{aligned}
+\]</span> It’s noteworthy that this is similar to the <em>improper</em>
+score <span class="math inline">\([y - \mathbb{E}(y|\text{data})]^2 +
+\mathbb{V}(y|\text{data})\)</span>, and also in this new case, one can
+have a model with artificially small posterior variance with a smaller
+expected score, making this type of construction problematic to
+interpret.</p>
+<p>However, in some cases it does provide alternative approaches for how
+to compute the proper scores for the full posterior predictive
+distributions. If <span class="math inline">\(\lambda_{ij}\)</span>,
+<span class="math inline">\(j=1,\dots,J\)</span> are samples from the
+posterior distribution, one score estimator is <span class="math display">\[
+\widehat{S}(F_i,y_i) = (y_i - \frac{1}{J}\sum_{j=1}^J \lambda_{ij})^2 ,
+\]</span> with the averaging over the samples inside the quadratic
+expression, and we can use</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata, <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">exp</span>(eta))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>scores <span class="ot">&lt;-</span> (y <span class="sc">-</span> pred<span class="sc">$</span>mean)<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
+<p>If we instead take advantage of the new expression above, we have
+<span class="math display">\[
+[y - \mathbb{E}(\lambda|\text{data})]^2
+=
+\mathbb{E}_{\lambda|\text{data}}[(y - \lambda)^2]
+-
+\mathbb{V}(\lambda|\text{data})
+\]</span> so the score can be estimated by</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata, <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">list</span>(<span class="at">cond_scores =</span> (y <span class="sc">-</span> <span class="fu">exp</span>(eta))<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">lambda =</span> <span class="fu">exp</span>(eta)))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>scores <span class="ot">&lt;-</span> pred<span class="sc">$</span>cond_scores<span class="sc">$</span>mean <span class="sc">-</span> pred<span class="sc">$</span>lambda<span class="sc">$</span>sd<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
+<p>For this particular case, this approach is unlikely to be an
+improvement or more accurate than the basic estimator.However, for other
+scores there may potentially be practical benefits.</p>
+<div id="an-alternative-estimator-for-crsp" class="section level3">
+<h3>An alternative estimator for CRSP</h3>
+<p>For the CRPS score, there are closed form expressions available for
+some distributions, conditionally on their paramters, but not for the
+full predictive mixture distribution. We take a similar approach as for
+SE, and let <span class="math inline">\(F\)</span> and <span class="math inline">\(F_\lambda\)</span> denote the unconditional and
+conditional cumulative distribution functions for the posterior
+predictive distribution. Then <span class="math inline">\(F(x)=\mathbb{E}_{\lambda|\text{data}}[F_\lambda(x)]\)</span>
+for all <span class="math inline">\(x\)</span>, and <span class="math display">\[
+\begin{aligned}
+S_\text{CRPS}(F,y) &amp;=
+\int_{-\infty}^\infty [F(x) - I(y\leq x)]^2 \,\mathrm{d}x
+\\
+&amp;=
+\mathbb{E}_{\lambda|\text{data}}\left[
+\int_{-\infty}^\infty [F_\lambda(x) - I(y\leq x)]^2 \,\mathrm{d}x
+\right] -
+\int_{-\infty}^\infty
+\left\{\mathbb{E}_{\lambda|\text{data}}\left[F_\lambda(x)^2\right]
+- \mathbb{E}_{\lambda|\text{data}}[F_\lambda(x)]^2\right\} \,\mathrm{d}x
+\\
+&amp;=
+\mathbb{E}_{\lambda|\text{data}}\left[
+S_\text{CRPS}(F_\lambda,y)
+\right] -
+\int_{-\infty}^\infty \mathbb{V}_{\lambda|\text{data}}[F_\lambda(x)]
+\,\mathrm{d}x .
+\end{aligned}
+\]</span> Note that we didn’t need to use any particular model
+properties here, so this holds for any predictive model with mixture
+structure, when <span class="math inline">\(\lambda\)</span> is the
+collection of model parameters. We also note the resemblance to the
+alternative expression for the Squared Error; this is because CRPS can
+be seen as the integral over all Brier scores for predicting event
+indicators of the form <span class="math inline">\(z=I(y\leq
+x)\)</span>, with probability <span class="math inline">\(F(x)\)</span>.</p>
+<p>In the Poisson case, we can now estimate the CRPS scores like this,
+that makes the code a bit easier than the previous version that needed
+<code>generate()</code>. However, it can be shown that the two
+approaches have nearly identical Monte Carlo variance, so the previous
+version is likely preferable as it doesn’t require knowing a closed form
+CRPS expression.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>poisson_crps <span class="ot">&lt;-</span> <span class="cf">function</span>(y, rate) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute the CRPS score for a single y, for the given rate paramter.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>max_K <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># some large value, so that 1-F(K) is small</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">formula =</span> <span class="sc">~</span> {</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                  lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(eta)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">list</span>(<span class="at">crps =</span> <span class="fu">vapply</span>(<span class="fu">seq_along</span>(y),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                                     <span class="cf">function</span>(i) <span class="fu">poisson_crps</span>(y[i], lambda[i]),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                                     <span class="fl">0.0</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">F =</span> <span class="fu">do.call</span>(</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                         cbind,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">lapply</span>(<span class="fu">seq_along</span>(y),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                                <span class="cf">function</span>(i) {</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                                  <span class="fu">data.frame</span>(</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">i =</span> i,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">F =</span> <span class="fu">ppois</span>(<span class="fu">seq</span>(<span class="dv">0</span>, max_K), <span class="at">rate =</span> lambda[i])</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>                                  )</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>                                }))</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>                <span class="at">n.samples =</span> <span class="dv">2000</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>crps_score <span class="ot">&lt;-</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  pred<span class="sc">$</span>crsp<span class="sc">$</span>mean <span class="sc">-</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  (pred<span class="sc">$</span>F <span class="sc">%&gt;%</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>     <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>     <span class="fu">summarise</span>(<span class="at">F_var =</span> <span class="fu">sum</span>(sd<span class="sc">^</span><span class="dv">2</span>), <span class="at">groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>     <span class="fu">pull</span>(F_var))</span></code></pre></div>
+<p>Formulas and functions for Poisson CRPS, as well as for other
+distributions, can be found at <a href="http://cran.nexr.com/web/packages/scoringRules/vignettes/crpsformulas.html#poisson-distribution-pois" class="uri">http://cran.nexr.com/web/packages/scoringRules/vignettes/crpsformulas.html#poisson-distribution-pois</a></p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
