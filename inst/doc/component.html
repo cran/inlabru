@@ -30,23 +30,23 @@ document.addEventListener('DOMContentLoaded', function(e) {
 </script>
 
 <style type="text/css">
-  code{white-space: pre-wrap;}
-  span.smallcaps{font-variant: small-caps;}
-  span.underline{text-decoration: underline;}
-  div.column{display: inline-block; vertical-align: top; width: 50%;}
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-  ul.task-list{list-style: none;}
-    </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
 
 
 
 <style type="text/css">
-  code {
-    white-space: pre;
-  }
-  .sourceCode {
-    overflow: visible;
-  }
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -64,55 +64,54 @@ pre > code.sourceCode { white-space: pre-wrap; }
 pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
-  { counter-reset: source-line 0; }
+{ counter-reset: source-line 0; }
 pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
+{ position: relative; left: -4em; counter-increment: source-line; }
 pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
 div.sourceCode
-  {   }
+{ }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
 </style>
 <script>
 // apply pandoc div.sourceCode style to pre.sourceCode instead
@@ -340,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Defining model components</h1>
 <h4 class="author">Andy Seaton</h4>
-<h4 class="date">Generated on 2022-10-24</h4>
+<h4 class="date">Generated on 2022-12-02</h4>
 
 
 
@@ -520,7 +519,7 @@ for</p>
 <li>Parameters that are the same for all predictor evaluations
 (intercept-like parameters).</li>
 <li>Using a covariate stored in an <code>sp</code> <code>Spatial*</code>
-object.</li>
+or <code>terra</code> <code>SpatRaster</code> object.</li>
 <li>Defining linear effects using an <code>lm</code>-style syntax.</li>
 <li>Behaviour for if <code>main</code>, <code>group</code> or
 <code>replicate</code> is a function given with no arguments.</li>
@@ -544,17 +543,19 @@ models with shared components.</p>
 <div id="sp-covariates" class="section level4">
 <h4><code>sp</code> covariates</h4>
 <p>If <code>main</code>, <code>group</code>, or <code>replicate</code>,
-is the name of an <code>sp</code> object stored in the global
-<code>R</code> environment, then <code>inlabru</code> attempts to do
-something intelligent by extracting the covariate information at the
-locations of the data passed to <code>bru()</code> or
-<code>like()</code>. In this case <strong>it is assumed that this data
-is also an <code>sp</code> object</strong>. <code>inlabru</code> does
-this by applying <code>sp::coordinates()</code> to the data and then
-extracting the covariate information using <code>sp::over()</code>.</p>
+is the name of an <code>Spatial*</code> or <code>SpatRaster</code>
+object stored in the global <code>R</code> environment, then
+<code>inlabru</code> attempts to do something intelligent by extracting
+the covariate information at the locations of the data passed to
+<code>bru()</code> or <code>like()</code>. This <strong>requires that
+this data is a <code>SpatialPoints*</code> or <code>sf</code>
+object</strong>. For <code>Spatial*</code> inputs, <code>inlabru</code>
+does this by applying <code>sp::coordinates()</code> to the data and
+then extracting the covariate information using
+<code>sp::over()</code>.</p>
 <p>The shorcut</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">~</span> <span class="fu">my_sp_effect</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> an_sp_object,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> a_spatial_object,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">&quot;linear&quot;</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>internally calls <code>eval_spatial()</code> which is almost
@@ -568,22 +569,23 @@ equivalent to</p>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">main =</span> <span class="fu">get_sp_covariate</span>(.data.),</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">&quot;linear&quot;</span></span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
-<p>Note that this requires <code>an_sp_object</code> to be stored in the
-global <code>R</code> environment (or in the environment associated with
-the model definition code) so it is findable when the expression is
+<p>Note that this requires <code>a_spatial_object</code> to be stored in
+the global <code>R</code> environment (or in the environment associated
+with the model definition code) so it is findable when the expression is
 internally evaluated by <code>inlabru</code>. Also note that the
-<code>get_sp_covariate</code> function above extract the first column of
-the <code>sp</code> object evaluation. For more general situations, one
-can either specify the optional <code>main_layer</code> argument to
+<code>get_sp_covariate</code> function above extracts the first column
+of the <code>sp</code> object evaluation. For more general situations,
+one can either specify the optional <code>main_layer</code> argument to
 extract another named or indexed column, or directly use
-<code>main = eval_spatial(an_sp_object, .data., layer = some_layer)</code>.</p>
+<code>main = eval_spatial(a_spatial_object, .data., layer = some_layer)</code>.</p>
 <p>Note that this assumes that <code>coordinates()</code> applied to the
 input data is a sensible thing to do, this might not be the case for all
 models! For example, if the input data is a
 <code>SpatialPolygonsDataFrame</code> then <code>coordinates()</code>
 returns the centroid of each polygon. As more specific input type
-support is developed, these special cases may be given more precise
-meaning.</p>
+support is developed, and support for <code>sp</code> is gradually
+deprecated in favour of <code>sf</code> and <code>terra</code>, these
+special cases may be given more precise meaning.</p>
 </div>
 <div id="lm-style-syntax" class="section level4">
 <h4><code>lm</code>-style syntax</h4>
@@ -633,11 +635,10 @@ applied to the data. For example,</p>
 <h4>Non-linear predictors</h4>
 <p><code>inlabru</code> supports non-linear predictors, where <span class="math inline">\(\tilde{\eta}(u,v)\)</span> is a non-linear
 function of <span class="math inline">\(\eta_u\)</span> and <span class="math inline">\(\eta_v\)</span>. It is important to note that the
-mapping each component effect vector <span class="math inline">\(\eta_u=A^(u) u\)</span> happens
+mapping each component effect vector <span class="math inline">\(\eta_u=A^{(u)} u\)</span> happens
 <strong>before</strong> the non-linear function is applied. So, for
 example, if <span class="math inline">\(\tilde{\eta}(u,v) = \exp(\eta_u
-+ \eta_v)\)</span> then this is evaluated as
-<code>exp(A_u %*% u + A_v %*% v)</code>.</p>
++ \eta_v)\)</span> then this is evaluated as <span class="math inline">\(\exp(A^{(u)} u + A^{(v)} v)\)</span>.</p>
 </div>
 </div>
 

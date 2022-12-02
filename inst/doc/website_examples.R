@@ -6,7 +6,6 @@ knitr::opts_chunk$set(
 
 ## ----setup, echo=FALSE,include=FALSE--------------------------------------------------------------
 
-
 ## ---- echo=FALSE,results="asis"-------------------------------------------------------------------
 files <- list.files("web", "\\.Rmd$")
 for (file in file.path("web", files)) {

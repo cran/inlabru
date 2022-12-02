@@ -43,7 +43,7 @@ options(width = 100) # sets width of output window
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
 #  ~ my_sp_effect(
-#    main = an_sp_object,
+#    main = a_spatial_object,
 #    model = "linear"
 #  )
 
