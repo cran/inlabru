@@ -529,11 +529,11 @@ the posterior mean and variance with <code>predict()</code> for each
 test data point. If <code>eta</code> is an expression for the linear
 predictor, and <code>newdata</code> holds the covariate information for
 the prediction points, run</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata, <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">exp</span>(eta), <span class="at">n.samples =</span> <span class="dv">2000</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>post_E <span class="ot">&lt;-</span> pred<span class="sc">$</span>mean</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>post_Var <span class="ot">&lt;-</span> pred<span class="sc">$</span>mean <span class="sc">+</span> pred<span class="sc">$</span>sd<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>SE_score <span class="ot">&lt;-</span> (newdata<span class="sc">$</span>y <span class="sc">-</span> post_E)<span class="sc">^</span><span class="dv">2</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>DS_score <span class="ot">&lt;-</span> (newdata<span class="sc">$</span>y <span class="sc">-</span> post_E)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> post_Var <span class="sc">+</span> <span class="fu">log</span>(post_Var)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata, <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">exp</span>(eta), <span class="at">n.samples =</span> <span class="dv">2000</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>post_E <span class="ot">&lt;-</span> pred<span class="sc">$</span>mean</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>post_Var <span class="ot">&lt;-</span> pred<span class="sc">$</span>mean <span class="sc">+</span> pred<span class="sc">$</span>sd<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>SE_score <span class="ot">&lt;-</span> (newdata<span class="sc">$</span>y <span class="sc">-</span> post_E)<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>DS_score <span class="ot">&lt;-</span> (newdata<span class="sc">$</span>y <span class="sc">-</span> post_E)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> post_Var <span class="sc">+</span> <span class="fu">log</span>(post_Var)</span></code></pre></div>
 </div>
 <div id="log-probability-and-log-density-scores" class="section level3">
 <h3>Log-Probability and log-density scores</h3>
@@ -543,12 +543,12 @@ probability is <span class="math display">\[
   \mathbb{P}(Y = y | \text{data}) = \mathbb{E}[\mathbb{P}(Y = y |
 \lambda, \text{data}) | \text{data}],
 \]</span> so we can estimate it using <code>predict()</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  newdata,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">dpois</span>(y, <span class="at">rate =</span> <span class="fu">exp</span>(eta)),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.samples =</span> <span class="dv">2000</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>log_score <span class="ot">&lt;-</span> <span class="fu">log</span>(pred<span class="sc">$</span>mean)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit,</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  newdata,</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">dpois</span>(y, <span class="at">rate =</span> <span class="fu">exp</span>(eta)),</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">n.samples =</span> <span class="dv">2000</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>log_score <span class="ot">&lt;-</span> <span class="fu">log</span>(pred<span class="sc">$</span>mean)</span></code></pre></div>
 <p>to estimate the log_score (increase <code>n.samples</code> if needed
 for sufficiently small Monte Carlo error).</p>
 </div>
@@ -593,45 +593,45 @@ k)\)</span>, for <span class="math inline">\(k\in
 <p><span class="math display">\[
 S_\text{CRPS}(F_i,y_i) \approx \sum_{k=0}^{K} r_{ik}^2
   \]</span></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># some large value, so that 1-F(K) is small</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>max_K <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">max</span>(y)) <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fu">max</span>(y))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">generate</span>(fit, newdata,</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="sc">~</span> {</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(eta)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, max_K)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do.call</span>(</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      cbind,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">lapply</span>(</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">seq_along</span>(y),</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">function</span>(i) {</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>          F <span class="ot">&lt;-</span> <span class="fu">ppois</span>(k, <span class="at">rate =</span> lambda[i])</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>          <span class="fu">data.frame</span>(</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">k =</span> <span class="fu">c</span>(k, k),</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">i =</span> <span class="fu">c</span>(i, i),</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;F&quot;</span>, <span class="st">&quot;residual&quot;</span>), <span class="at">each =</span> <span class="fu">length</span>(F)),</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">value =</span> <span class="fu">c</span>(F, F <span class="sc">-</span> (y[i] <span class="sc">&lt;=</span> k))</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>          )</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  },</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.samples =</span> <span class="dv">2000</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>F_estimate <span class="ot">&lt;-</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  (pred <span class="sc">%&gt;%</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;F&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">F =</span> <span class="fu">sum</span>(mean), <span class="at">groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(F))</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>crps_score <span class="ot">&lt;-</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  (pred <span class="sc">%&gt;%</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;residual&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">crps =</span> <span class="fu">sum</span>(mean<span class="sc">^</span><span class="dv">2</span>), <span class="at">groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(crps))</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that the cutoff point K has nearly probability mass 1 below it,</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="co"># for all i:</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(F_estimate)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># some large value, so that 1-F(K) is small</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>max_K <span class="ot">&lt;-</span> <span class="fu">ceiling</span>(<span class="fu">max</span>(y)) <span class="sc">+</span> <span class="dv">4</span> <span class="sc">*</span> <span class="fu">sqrt</span>(<span class="fu">max</span>(y))</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">generate</span>(fit, newdata,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">formula =</span> <span class="sc">~</span> {</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(eta)</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>    k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, max_K)</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>    <span class="fu">do.call</span>(</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>      cbind,</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>      <span class="fu">lapply</span>(</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>        <span class="fu">seq_along</span>(y),</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>        <span class="cf">function</span>(i) {</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>          Fpred <span class="ot">&lt;-</span> <span class="fu">ppois</span>(k, <span class="at">rate =</span> lambda[i])</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>          <span class="fu">data.frame</span>(</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>            <span class="at">k =</span> <span class="fu">c</span>(k, k),</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>            <span class="at">i =</span> <span class="fu">c</span>(i, i),</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>            <span class="at">type =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;F&quot;</span>, <span class="st">&quot;residual&quot;</span>), <span class="at">each =</span> <span class="fu">length</span>(Fpred)),</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>            <span class="at">value =</span> <span class="fu">c</span>(Fpred, Fpred <span class="sc">-</span> (y[i] <span class="sc">&lt;=</span> k))</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>          )</span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>        }</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>      )</span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>    )</span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>  },</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>  <span class="at">n.samples =</span> <span class="dv">2000</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>)</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>F_estimate <span class="ot">&lt;-</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>  (pred <span class="sc">%&gt;%</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>    <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;F&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">F =</span> <span class="fu">sum</span>(mean), <span class="at">groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>    <span class="fu">pull</span>(<span class="st">&quot;F&quot;</span>))</span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>crps_score <span class="ot">&lt;-</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>  (pred <span class="sc">%&gt;%</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>    <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;residual&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">crps =</span> <span class="fu">sum</span>(mean<span class="sc">^</span><span class="dv">2</span>), <span class="at">groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a>    <span class="fu">pull</span>(crps))</span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co"># Check that the cutoff point K has nearly probability mass 1 below it,</span></span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a><span class="co"># for all i:</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a><span class="fu">min</span>(F_estimate)</span></code></pre></div>
 </div>
 </div>
 <div id="posterior-expectation-of-conditional-scores" class="section level2">
@@ -668,8 +668,8 @@ posterior distribution, one score estimator is <span class="math display">\[
 \widehat{S}(F_i,y_i) = (y_i - \frac{1}{J}\sum_{j=1}^J \lambda_{ij})^2 ,
 \]</span> with the averaging over the samples inside the quadratic
 expression, and we can use</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata, <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">exp</span>(eta))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>scores <span class="ot">&lt;-</span> (y <span class="sc">-</span> pred<span class="sc">$</span>mean)<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata, <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">exp</span>(eta))</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>scores <span class="ot">&lt;-</span> (y <span class="sc">-</span> pred<span class="sc">$</span>mean)<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
 <p>If we instead take advantage of the new expression above, we have
 <span class="math display">\[
 [y - \mathbb{E}(\lambda|\text{data})]^2
@@ -678,11 +678,11 @@ expression, and we can use</p>
 -
 \mathbb{V}(\lambda|\text{data})
 \]</span> so the score can be estimated by</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata, <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">list</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">cond_scores =</span> (y <span class="sc">-</span> <span class="fu">exp</span>(eta))<span class="sc">^</span><span class="dv">2</span>,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">lambda =</span> <span class="fu">exp</span>(eta)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>))</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>scores <span class="ot">&lt;-</span> pred<span class="sc">$</span>cond_scores<span class="sc">$</span>mean <span class="sc">-</span> pred<span class="sc">$</span>lambda<span class="sc">$</span>sd<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata, <span class="at">formula =</span> <span class="sc">~</span> <span class="fu">list</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">cond_scores =</span> (y <span class="sc">-</span> <span class="fu">exp</span>(eta))<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="at">lambda =</span> <span class="fu">exp</span>(eta)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>))</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>scores <span class="ot">&lt;-</span> pred<span class="sc">$</span>cond_scores<span class="sc">$</span>mean <span class="sc">-</span> pred<span class="sc">$</span>lambda<span class="sc">$</span>sd<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
 <p>For this particular case, this approach is unlikely to be an
 improvement or more accurate than the basic estimator.However, for other
 scores there may potentially be practical benefits.</p>
@@ -728,41 +728,41 @@ that makes the code a bit easier than the previous version that needed
 approaches have nearly identical Monte Carlo variance, so the previous
 version is likely preferable as it doesn’t require knowing a closed form
 CRPS expression.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>poisson_crps <span class="ot">&lt;-</span> <span class="cf">function</span>(y, rate) {</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute the CRPS score for a single y, for the given rate paramter.</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>max_K <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># some large value, so that 1-F(K) is small</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> <span class="sc">~</span> {</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(eta)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">list</span>(</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">crps =</span> <span class="fu">vapply</span>(</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">seq_along</span>(y),</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">function</span>(i) <span class="fu">poisson_crps</span>(y[i], lambda[i]),</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="fl">0.0</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">F =</span> <span class="fu">do.call</span>(</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        cbind,</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lapply</span>(</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>          <span class="fu">seq_along</span>(y),</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>          <span class="cf">function</span>(i) {</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>            <span class="fu">data.frame</span>(</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">i =</span> i,</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>              <span class="at">F =</span> <span class="fu">ppois</span>(<span class="fu">seq</span>(<span class="dv">0</span>, max_K), <span class="at">rate =</span> lambda[i])</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>          }</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  },</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">n.samples =</span> <span class="dv">2000</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>crps_score <span class="ot">&lt;-</span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>  pred<span class="sc">$</span>crsp<span class="sc">$</span>mean <span class="sc">-</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  (pred<span class="sc">$</span>F <span class="sc">%&gt;%</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">F_var =</span> <span class="fu">sum</span>(sd<span class="sc">^</span><span class="dv">2</span>), <span class="at">groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(F_var))</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>poisson_crps <span class="ot">&lt;-</span> <span class="cf">function</span>(y, rate) {</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="co"># compute the CRPS score for a single y, for the given rate paramter.</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>}</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>max_K <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># some large value, so that 1-F(K) is small</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, newdata,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">formula =</span> <span class="sc">~</span> {</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(eta)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    <span class="fu">list</span>(</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>      <span class="at">crps =</span> <span class="fu">vapply</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>        <span class="fu">seq_along</span>(y),</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>        <span class="cf">function</span>(i) <span class="fu">poisson_crps</span>(y[i], lambda[i]),</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>        <span class="fl">0.0</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>      ),</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>      <span class="at">F =</span> <span class="fu">do.call</span>(</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>        cbind,</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>        <span class="fu">lapply</span>(</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>          <span class="fu">seq_along</span>(y),</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>          <span class="cf">function</span>(i) {</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>            <span class="fu">data.frame</span>(</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>              <span class="at">i =</span> i,</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>              <span class="at">F =</span> <span class="fu">ppois</span>(<span class="fu">seq</span>(<span class="dv">0</span>, max_K), <span class="at">rate =</span> lambda[i])</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>            )</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>          }</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>        )</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>      )</span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>    )</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>  },</span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>  <span class="at">n.samples =</span> <span class="dv">2000</span></span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>)</span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>crps_score <span class="ot">&lt;-</span></span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>  pred<span class="sc">$</span>crsp<span class="sc">$</span>mean <span class="sc">-</span></span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>  (pred<span class="sc">$</span>F <span class="sc">%&gt;%</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">F_var =</span> <span class="fu">sum</span>(sd<span class="sc">^</span><span class="dv">2</span>), <span class="at">groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>    <span class="fu">pull</span>(F_var))</span></code></pre></div>
 <p>Formulas and functions for Poisson CRPS, as well as for other
 distributions, can be found at <a href="http://cran.nexr.com/web/packages/scoringRules/vignettes/crpsformulas.html#poisson-distribution-pois" class="uri">http://cran.nexr.com/web/packages/scoringRules/vignettes/crpsformulas.html#poisson-distribution-pois</a></p>
 </div>
