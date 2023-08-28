@@ -32,7 +32,7 @@ library(inlabru)
 #  )
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  mapper <- bru_mapper_offset(list(name1 = ..., name2 = ..., ...),
+#  mapper <- bru_mapper_collect(list(name1 = ..., name2 = ..., ...),
 #    hidden = FALSE
 #  )
 #  ibm_eval(mapper,
