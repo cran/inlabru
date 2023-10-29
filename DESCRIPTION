@@ -1,7 +1,7 @@
 Package: inlabru
 Type: Package
 Title: Bayesian Latent Gaussian Modelling using INLA and Extensions
-Version: 2.9.0
+Version: 2.10.0
 Authors@R: c(
   person("Finn", "Lindgren", email = "finn.lindgren@gmail.com",
          role = c("aut", "cre", "cph"),
@@ -28,7 +28,10 @@ Authors@R: c(
   person("Meehan", "Tim", email = "tmeeha@gmail.com", role = c("ctb", "cph"),
          comment = "Tim Meehan contributed the SVC vignette and robins data"),
   person("Reddy Peddinenikalva", "Niharika", role = c("ctb", "cph"),
-         comment = "Niharika Peddinenikalva contributed the LGCP residuals vignette")
+         comment = "Niharika Peddinenikalva contributed the LGCP residuals vignette"),
+  person("Perepolkin", "Dmytro", email = "dperepolkin@gmail.com",
+         role = c("ctb", "cph"),
+         comment = "Dmytro Perepolkin contributed the ZIP/ZAP vignette")
   )
 URL: http://www.inlabru.org, https://inlabru-org.github.io/inlabru/,
         https://github.com/inlabru-org/inlabru
@@ -75,7 +78,7 @@ BuildVignettes: true
 LazyData: true
 LazyDataCompression: xz
 NeedsCompilation: no
-Packaged: 2023-08-28 15:57:26 UTC; flindgre
+Packaged: 2023-10-29 02:26:12 UTC; flindgre
 Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     Finn Lindgren continued development of the main code),
   Fabian E. Bachl [aut, cph] (Fabian Bachl wrote the main code),
@@ -94,7 +97,9 @@ Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
   Meehan Tim [ctb, cph] (Tim Meehan contributed the SVC vignette and
     robins data),
   Reddy Peddinenikalva Niharika [ctb, cph] (Niharika Peddinenikalva
-    contributed the LGCP residuals vignette)
+    contributed the LGCP residuals vignette),
+  Perepolkin Dmytro [ctb, cph] (Dmytro Perepolkin contributed the ZIP/ZAP
+    vignette)
 Maintainer: Finn Lindgren <finn.lindgren@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-08-28 17:40:05 UTC
+Date/Publication: 2023-10-29 05:10:06 UTC

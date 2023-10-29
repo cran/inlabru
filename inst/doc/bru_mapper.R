@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -8,30 +8,48 @@ knitr::opts_chunk$set(
 ## ----setup, eval = TRUE, echo=FALSE, include=FALSE----------------------------
 library(inlabru)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  ?bru_mapper # Mapper constructors
 #  ?bru_mapper_generics # Generic and default methods
 #  ?bru_mapper_methods # Specialised mapper methods
 #  ?bru_get_mapper # Mapper extraction methods
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  ibm_eval(mapper, input, state)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  mapper <- bru_mapper_scale()
 #  ibm_eval(mapper,
 #    input = ...,
 #    state = ...
 #  )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
+#  mapper <- bru_mapper_marginal(qfun = ..., pfun = ..., dfun = ..., ..., inverse = ...)
+#  ibm_eval(mapper,
+#    input = NULL, # If a list is given, it overrides the parameter specification
+#    state = ...
+#  )
+#  
+#  # Examples:
+#  mapper <- bru_mapper_marginal(qfun = qexp, rate = 1 / 8)
+#  mapper <- bru_mapper_marginal(qfun = qexp, pfun = pexp, dfun = dexp, rate = 1 / 8)
+
+## ----eval=FALSE---------------------------------------------------------------
 #  mapper <- bru_mapper_aggregate(rescale = ...)
 #  ibm_eval(mapper,
 #    input = list(block = ..., weights = ...),
 #    state = ...
 #  )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
+#  mapper <- bru_mapper_logsumexp(rescale = ...)
+#  ibm_eval(mapper,
+#    input = list(block = ..., weights = ...),
+#    state = ...
+#  )
+
+## ----eval=FALSE---------------------------------------------------------------
 #  mapper <- bru_mapper_collect(list(name1 = ..., name2 = ..., ...),
 #    hidden = FALSE
 #  )
@@ -46,21 +64,21 @@ library(inlabru)
 #    inla_f = TRUE
 #  )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  mapper <- bru_mapper_multi(list(name1 = ..., name2 = ..., ...))
 #  ibm_eval(mapper,
 #    input = list(name1 = ..., name2 = ..., ...),
 #    state = ...
 #  )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  mapper <- bru_mapper_pipe(list(name1 = ..., name2 = ..., ...))
 #  ibm_eval(mapper,
 #    input = list(name1 = ..., name2 = ..., ...),
 #    state = ...
 #  )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  mapper <-
 #    bru_mapper_pipe(
 #      list(
@@ -76,12 +94,12 @@ library(inlabru)
 #    state = ...
 #  )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  bru_get_mapper.my_unique_model_class <- function(model, ...) {
 #    ...
 #  }
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  ibm_n(mapper, inla_f, ...)
 #  ibm_n_output(mapper, input, ...)
 #  ibm_values(mapper, inla_f, ...)
@@ -125,10 +143,10 @@ ibm_n(mapper, multi = TRUE, inla_f = TRUE)
 ibm_values(mapper, inla_f = TRUE)
 ibm_values(mapper, multi = TRUE, inla_f = TRUE)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  bru_mapper(mesh)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # If ibm_values() should return mesh$loc (e.g. for "rw2" models
 #  # with degree=1 meshes)
 #  bru_mapper(mesh, indexed = FALSE)
@@ -136,16 +154,16 @@ ibm_values(mapper, multi = TRUE, inla_f = TRUE)
 #  # inla.spde2.pcmatern() models)
 #  bru_mapper(mesh, indexed = TRUE)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  bru_mapper_define(mapper, new_class)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  bru_mapper_define(
 #    mapper = list(n = 10, values = 1:10),
 #    new_class = "my_bru_mapper_class_name"
 #  )
 
-## ---- eval=TRUE---------------------------------------------------------------
+## ----eval=TRUE----------------------------------------------------------------
 bru_mapper_p_quadratic <- function(labels, min_degree = 0, ...) {
   if (is.factor(labels)) {
     mapper <- list(
@@ -161,13 +179,13 @@ bru_mapper_p_quadratic <- function(labels, min_degree = 0, ...) {
   bru_mapper_define(mapper, new_class = "bru_mapper_p_quadratic")
 }
 
-## ---- eval=TRUE---------------------------------------------------------------
+## ----eval=TRUE----------------------------------------------------------------
 ibm_n.bru_mapper_p_quadratic <- function(mapper, ...) {
   p <- length(mapper$labels)
   (mapper$min_degree <= 0) + (mapper$min_degree <= 1) * p + p * (p + 1) / 2
 }
 
-## ---- eval=TRUE---------------------------------------------------------------
+## ----eval=TRUE----------------------------------------------------------------
 ibm_values.bru_mapper_p_quadratic <- function(mapper, ...) {
   p <- length(mapper$labels)
   n <- ibm_n(mapper)
@@ -180,7 +198,7 @@ ibm_values.bru_mapper_p_quadratic <- function(mapper, ...) {
   )
 }
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  bru_mapper_p_quadratic <- function(labels, min_degree = 0, ...) {
 #    ...
 #    mapper <- bru_mapper_define(mapper, new_class = "bru_mapper_p_quadratic")
@@ -189,7 +207,7 @@ ibm_values.bru_mapper_p_quadratic <- function(mapper, ...) {
 #    mapper
 #  }
 
-## ---- eval=TRUE---------------------------------------------------------------
+## ----eval=TRUE----------------------------------------------------------------
 ibm_jacobian.bru_mapper_p_quadratic <- function(mapper, input, ...) {
   if (is.null(input)) {
     return(Matrix::Matrix(0, 0, ibm_n(mapper)))

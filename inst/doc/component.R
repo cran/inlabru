@@ -47,7 +47,7 @@ options(width = 100) # sets width of output window
 #    model = "linear"
 #  )
 
-## ---- eval=FALSE----------------------------------------------------------------------------------
+## ----eval=FALSE-----------------------------------------------------------------------------------
 #  get_sp_covariate <- function(df) {
 #    locs <- coordinates(df)
 #    over(locs, an_sp_object)[, 1]

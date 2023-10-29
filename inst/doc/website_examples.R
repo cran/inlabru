@@ -1,4 +1,4 @@
-## ---- include = FALSE-----------------------------------------------------------------------------
+## ----include = FALSE------------------------------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -6,7 +6,7 @@ knitr::opts_chunk$set(
 
 ## ----setup, echo=FALSE,include=FALSE--------------------------------------------------------------
 
-## ---- echo=FALSE,results="asis"-------------------------------------------------------------------
+## ----echo=FALSE,results="asis"--------------------------------------------------------------------
 files <- list.files("articles", "\\.Rmd$")
 for (file in file.path("articles", files)) {
   lines <- readLines(file, n = 10)
@@ -25,7 +25,7 @@ for (file in file.path("articles", files)) {
   }
 }
 
-## ---- echo=FALSE,results="asis"-------------------------------------------------------------------
+## ----echo=FALSE,results="asis"--------------------------------------------------------------------
 files <- list.files(".", "\\.Rmd$")
 for (file in files) {
   lines <- readLines(file, n = 10)
