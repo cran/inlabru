@@ -1,7 +1,7 @@
 Package: inlabru
 Type: Package
 Title: Bayesian Latent Gaussian Modelling using INLA and Extensions
-Version: 2.10.0
+Version: 2.10.1
 Authors@R: c(
   person("Finn", "Lindgren", email = "finn.lindgren@gmail.com",
          role = c("aut", "cre", "cph"),
@@ -55,11 +55,10 @@ Encoding: UTF-8
 Depends: fmesher (>= 0.1.2), methods, R (>= 3.6), stats
 Imports: dplyr, lifecycle, magrittr, MatrixModels, Matrix, plyr, rlang,
         sf, sp (>= 1.4-5), terra, tibble, utils, withr
-Suggests: covr, ggmap, ggplot2, ggpolypath, graphics, INLA (>=
-        23.01.31), knitr, maps, mgcv, patchwork, raster, RColorBrewer,
-        rgl, rmarkdown, scales, shiny, sn, spatstat.geom,
-        spatstat.data, sphereplot, splancs, tidyterra, testthat, tidyr,
-        DiagrammeR
+Suggests: covr, ggmap, ggplot2, graphics, INLA (>= 23.01.31), knitr,
+        maps, mgcv, patchwork, raster, RColorBrewer, rgl, rmarkdown,
+        scales, shiny, sn, spatstat.geom, spatstat.data, sphereplot,
+        splancs, tidyterra, testthat, tidyr, DiagrammeR
 Enhances: stars
 Config/testthat/parallel: true
 Config/testthat/edition: 3
@@ -78,7 +77,7 @@ BuildVignettes: true
 LazyData: true
 LazyDataCompression: xz
 NeedsCompilation: no
-Packaged: 2023-10-29 02:26:12 UTC; flindgre
+Packaged: 2023-12-20 20:57:05 UTC; flindgre
 Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     Finn Lindgren continued development of the main code),
   Fabian E. Bachl [aut, cph] (Fabian Bachl wrote the main code),
@@ -102,4 +101,4 @@ Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     vignette)
 Maintainer: Finn Lindgren <finn.lindgren@gmail.com>
 Repository: CRAN
-Date/Publication: 2023-10-29 05:10:06 UTC
+Date/Publication: 2023-12-21 01:10:02 UTC

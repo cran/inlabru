@@ -48,13 +48,8 @@ options(width = 100) # sets width of output window
 #  )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  get_sp_covariate <- function(df) {
-#    locs <- coordinates(df)
-#    over(locs, an_sp_object)[, 1]
-#  }
-#  
 #  ~ my_sp_effect(
-#    main = get_sp_covariate(.data.),
+#    main = eval_spatial(a_spatial_object, .data.),
 #    model = "linear"
 #  )
 
@@ -65,7 +60,10 @@ options(width = 100) # sets width of output window
 #  )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  MatrixModels::model.Matrix(~ x1:x2 + x3 * x4, .data.)
+#  ~ my_fixed_effects(
+#    main = MatrixModels::model.Matrix(~ x1:x2 + x3 * x4, .data.),
+#    model = "fixed"
+#  )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
 #  ~ a_component(

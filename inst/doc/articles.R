@@ -1,28 +1,12 @@
----
-title: "Examples on the inlabru website"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Examples on the inlabru website}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r, include = FALSE}
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
 
-```{r setup, echo=FALSE,include=FALSE}
-```
+## ----setup, echo=FALSE,include=FALSE------------------------------------------
 
-## Package examples
-
-These potentially long running examples/tutorials are available on
-(https://inlabru-org.github.io/inlabru/)
-
-```{r, echo=FALSE,results="asis"}
+## ----echo=FALSE,results="asis"------------------------------------------------
 files <- list.files("articles", "\\.Rmd$")
 for (file in file.path("articles", files)) {
   lines <- readLines(file, n = 10)
@@ -40,14 +24,8 @@ for (file in file.path("articles", files)) {
     )
   }
 }
-```
 
-## Package vignettes
-
-These package vignettes are also available on
-(https://inlabru-org.github.io/inlabru/)
-
-```{r, echo=FALSE,results="asis"}
+## ----echo=FALSE,results="asis"------------------------------------------------
 files <- list.files(".", "\\.Rmd$")
 for (file in files) {
   lines <- readLines(file, n = 10)
@@ -65,4 +43,4 @@ for (file in files) {
     )
   }
 }
-```
+
