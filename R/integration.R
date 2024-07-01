@@ -160,9 +160,10 @@ int.quadrature <- function(sp = NULL, ep = NULL, scheme = "gaussian", n.points =
 
 
 
+#' @describeIn inlabru-deprecated
 #' Aggregate integration weights onto mesh nodes
 #'
-#' `r lifecycle::badge("deprecated")` Use [fm_vertex_projection()] instead.
+#' `r lifecycle::badge("deprecated")` Use [fmesher::fm_vertex_projection()] instead.
 #'
 #' @param mesh Mesh on which to integrate
 #' @param integ `list` of `loc`, integration points,
@@ -171,9 +172,8 @@ int.quadrature <- function(sp = NULL, ep = NULL, scheme = "gaussian", n.points =
 #'   are handled.
 #' @author Finn Lindgren \email{finn.lindgren@@gmail.com}
 #' @keywords internal
-#' @export
 integration_weight_aggregation <- function(mesh, integ) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     "2.8.0",
     "integration_weight_aggregation()",
     "fmesher::fm_vertex_projection()"
@@ -185,7 +185,7 @@ integration_weight_aggregation <- function(mesh, integ) {
 #' @describeIn inlabru-deprecated
 #' Integration scheme for mesh triangle interiors
 #'
-#' `r lifecycle::badge("deprecated")` Use [fm_int_mesh_2d_core()] instead.
+#' `r lifecycle::badge("deprecated")` Use [fmesher::fm_int_mesh_2d_core()] instead.
 #'
 #' @param mesh Mesh on which to integrate
 #' @param tri_subset Optional triangle index vector for integration on a subset
@@ -199,7 +199,7 @@ integration_weight_aggregation <- function(mesh, integ) {
 #' @author Finn Lindgren \email{finn.lindgren@@gmail.com}
 #' @keywords internal
 mesh_triangle_integration <- function(mesh, tri_subset = NULL, nsub = NULL) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     "2.8.0",
     "mesh_triangle_integration()",
     "fmesher::fm_int_mesh_2d_core()"

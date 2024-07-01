@@ -50,7 +50,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -339,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Defining model components</h1>
 <h4 class="author">Andy Seaton</h4>
-<h4 class="date">Generated on 2023-12-20</h4>
+<h4 class="date">Generated on 2024-07-01</h4>
 
 
 
@@ -553,7 +553,7 @@ the data passed to <code>bru()</code> or <code>like()</code>. This
 <code>SpatialPoints*</code> object</strong>. <code>inlabru</code> does
 this by calling the <code>inlabru::eval_spatial()</code> method, which
 supports several covariate storage types.</p>
-<p>The shorcut</p>
+<p>The shortcut</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="sc">~</span> <span class="fu">my_sp_effect</span>(</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">main =</span> a_spatial_object,</span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">&quot;linear&quot;</span></span>
@@ -574,7 +574,7 @@ named or indexed column, or directly use
 <code>main = eval_spatial(a_spatial_object, .data., layer = some_layer)</code>.</p>
 <p>Note that this assumes that the data is either <code>sf</code>, so
 that <code>st_geometry(.data.)</code> retrieves point locations, or
-<code>sf</code>, where <code>coordinates(.data.)</code> retrieves
+<code>sp</code> where <code>coordinates(.data.)</code> retrieves
 coordinates. This might not be a sensible thing for all models! For
 example, if the input data is a <code>SpatialPolygonsDataFrame</code>
 then <code>coordinates(.data.)</code> returns the centroid of each
@@ -614,7 +614,7 @@ utilising the functionality already supported by the
 <code>MatrixModels</code> package. The formula is interpreted in the
 conventional way, <code>x1:x2</code> is the interaction of covariates
 <code>x1</code> and <code>x2</code>, not including their individual
-fixed effects, and <code>x3:x4</code> is the interaction of
+fixed effects, and <code>x3 * x4</code> is the interaction of
 <code>x3</code> and <code>x4</code> inclusive of the individual fixed
 effects <code>x3</code> and <code>x4</code>. Note that for
 implementation technical reasons, the estimated parameters appear in

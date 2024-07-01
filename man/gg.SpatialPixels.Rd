@@ -7,7 +7,7 @@
 \method{gg}{SpatialPixels}(data, ...)
 }
 \arguments{
-\item{data}{A \link{SpatialPixels} object.}
+\item{data}{A \link[sp:SpatialGrid]{sp::SpatialPixels} object.}
 
 \item{...}{Arguments passed on to \code{geom_tile}.}
 }
@@ -35,6 +35,7 @@ if (require("ggplot2", quietly = TRUE) &&
 }
 \seealso{
 Other geomes for spatial data: 
+\code{\link{gg}()},
 \code{\link{gg.SpatRaster}()},
 \code{\link{gg.SpatialGridDataFrame}()},
 \code{\link{gg.SpatialLines}()},
@@ -42,7 +43,6 @@ Other geomes for spatial data:
 \code{\link{gg.SpatialPoints}()},
 \code{\link{gg.SpatialPolygons}()},
 \code{\link{gg.sf}()},
-\code{\link{gg}()},
 \code{\link{gm}()}
 }
 \concept{geomes for spatial data}

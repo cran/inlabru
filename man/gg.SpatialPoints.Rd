@@ -13,7 +13,7 @@
 mapping. The default mapping is
 \code{ggplot2::aes(x = .data[[coordnames(data)[1]]], y = .data[[coordnames(data)[2]]])}.}
 
-\item{crs}{A \link{CRS} object defining the coordinate system to project the data to before plotting.}
+\item{crs}{A \link[sp:CRS-class]{sp::CRS} object defining the coordinate system to project the data to before plotting.}
 
 \item{...}{Arguments passed on to \code{geom_point}.}
 }
@@ -81,14 +81,14 @@ to plot the points. Requires the \code{ggplot2} package.
 }
 \seealso{
 Other geomes for spatial data: 
+\code{\link{gg}()},
 \code{\link{gg.SpatRaster}()},
 \code{\link{gg.SpatialGridDataFrame}()},
 \code{\link{gg.SpatialLines}()},
-\code{\link{gg.SpatialPixelsDataFrame}()},
 \code{\link{gg.SpatialPixels}()},
+\code{\link{gg.SpatialPixelsDataFrame}()},
 \code{\link{gg.SpatialPolygons}()},
 \code{\link{gg.sf}()},
-\code{\link{gg}()},
 \code{\link{gm}()}
 }
 \concept{geomes for spatial data}
