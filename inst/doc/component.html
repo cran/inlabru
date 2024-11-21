@@ -61,7 +61,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -339,7 +339,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Defining model components</h1>
 <h4 class="author">Andy Seaton</h4>
-<h4 class="date">Generated on 2024-07-01</h4>
+<h4 class="date">Generated on 2024-11-21</h4>
 
 
 
@@ -485,7 +485,7 @@ data. This avoids the need to pre-process everything into a single
 <code>data.frame</code>.</p>
 <p>The functionality of allowing general <code>R</code> expressions can
 be used to extend the types of data that can be passed to the
-<code>bru()</code>, <code>like()</code> and <code>lgcp()</code>
+<code>bru()</code>, <code>bru_obs()</code> and <code>lgcp()</code>
 functions. It is the basis for the support of spatial data structures
 such as <code>sp</code> objects, and there is also experimental support
 to allow users to pass data as a list. <code>inlabru</code> is thus
@@ -548,7 +548,7 @@ is the name of an <code>sf</code>, <code>SpatRaster</code>, or
 <code>Spatial*</code> object stored in the global <code>R</code>
 environment, then <code>inlabru</code> attempts to do something
 intelligent by extracting the covariate information at the locations of
-the data passed to <code>bru()</code> or <code>like()</code>. This
+the data passed to <code>bru()</code> or <code>bru_obs()</code>. This
 <strong>requires that this data is a <code>sf</code> or
 <code>SpatialPoints*</code> object</strong>. <code>inlabru</code> does
 this by calling the <code>inlabru::eval_spatial()</code> method, which

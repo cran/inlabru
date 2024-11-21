@@ -25,7 +25,9 @@ library(inlabru)
 #  )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  mapper <- bru_mapper_marginal(qfun = ..., pfun = ..., dfun = ..., ..., inverse = ...)
+#  mapper <- bru_mapper_marginal(
+#    qfun = ..., pfun = ..., dfun = ..., ..., inverse = ...
+#  )
 #  ibm_eval(mapper,
 #    input = NULL, # If a list is given, it overrides the parameter specification
 #    state = ...
@@ -33,7 +35,9 @@ library(inlabru)
 #  
 #  # Examples:
 #  mapper <- bru_mapper_marginal(qfun = qexp, rate = 1 / 8)
-#  mapper <- bru_mapper_marginal(qfun = qexp, pfun = pexp, dfun = dexp, rate = 1 / 8)
+#  mapper <- bru_mapper_marginal(
+#    qfun = qexp, pfun = pexp, dfun = dexp, rate = 1 / 8
+#  )
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  mapper <- bru_mapper_aggregate(rescale = ...)
@@ -75,6 +79,13 @@ library(inlabru)
 #  mapper <- bru_mapper_pipe(list(name1 = ..., name2 = ..., ...))
 #  ibm_eval(mapper,
 #    input = list(name1 = ..., name2 = ..., ...),
+#    state = ...
+#  )
+
+## ----eval=FALSE---------------------------------------------------------------
+#  mapper <- bru_mapper_repeat(mapper = ..., n_rep = ...)
+#  ibm_eval(mapper,
+#    input = ...,
 #    state = ...
 #  )
 
