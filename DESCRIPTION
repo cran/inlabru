@@ -1,7 +1,7 @@
 Package: inlabru
 Type: Package
 Title: Bayesian Latent Gaussian Modelling using INLA and Extensions
-Version: 2.12.0
+Version: 2.13.0
 Authors@R: c(
   person("Finn", "Lindgren", email = "finn.lindgren@gmail.com",
          role = c("aut", "cre", "cph"),
@@ -52,35 +52,38 @@ License: GPL (>= 2)
 Additional_repositories: https://inla.r-inla-download.org/R/testing
 RoxygenNote: 7.3.2
 Encoding: UTF-8
-Depends: fmesher (>= 0.2.0), methods, R (>= 3.6), stats
+Depends: fmesher (>= 0.4.0), methods, R (>= 3.6), stats
 Imports: dplyr, lifecycle, magrittr, MatrixModels, Matrix, plyr, rlang,
         sf, tibble, utils, withr
 Suggests: covr, ggplot2, graphics, INLA (>= 23.01.31), knitr, maps,
         mgcv, patchwork, raster, RColorBrewer, rgl, rmarkdown, scales,
-        shiny, sn, sp (>= 2.1), spatstat.geom, spatstat.data,
-        sphereplot, splancs, terra, tidyterra, testthat, tidyr,
-        DiagrammeR
+        scoringRules, shiny, sn, sp (>= 2.1), spatstat.geom,
+        spatstat.data, sphereplot, splancs, terra, tidyterra, testthat
+        (>= 3.2.0), tidyr, DiagrammeR
 Enhances: stars
 Config/testthat/parallel: true
 Config/testthat/edition: 3
-Collate: '0_inlabru_envir.R' 'bru.gof.R' 'bru.inference.R' 'bru_sp.R'
+Collate: '0_inlabru_envir.R' 'bru.gof.R' 'bru.inference.R'
+        'bru_conversion.R' 'bru_index.R' 'bru_input.R' 'bru_sp.R'
         'data.Poisson1_1D.R' 'data.Poisson2_1D.R' 'data.Poisson3_1D.R'
         'data.gorillas.R' 'data.mexdolphin.R' 'data.mrsea.R'
         'data.robins_subset.R' 'data.shrimp.R' 'data.toygroups.R'
         'data.toypoints.R' 'deltaIC.R' 'deprecated.R' 'effect.R'
         'environment.R' 'fmesher.R' 'ggplot.R' 'inla.R'
         'inlabru-package.R' 'local_testthat.R' 'mappers.R'
-        'mapper_repeat.R' 'model.R' 'nlinla.R' 'plotsample.R' 'rgl.R'
-        'sampling.R' 'spatstat.R' 'spde.R' 'stack.R' 'track_plotting.R'
-        'transformation.R' 'used.R' 'utils.R'
+        'mapper_collect.R' 'mapper_repeat.R' 'mapper_sum.R' 'model.R'
+        'nlinla.R' 'plotsample.R' 'rgl.R' 'sampling.R' 'spatstat.R'
+        'spde.R' 'stack.R' 'track_plotting.R' 'transformation.R'
+        'used.R' 'utils.R'
 VignetteBuilder: knitr
 BuildVignettes: true
 LazyData: true
 LazyDataCompression: xz
 NeedsCompilation: no
-Packaged: 2024-11-21 16:54:14 UTC; flindgre
-Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
-    Finn Lindgren continued development of the main code),
+Packaged: 2025-07-09 20:33:47 UTC; flindgre
+Author: Finn Lindgren [aut, cre, cph] (ORCID:
+    <https://orcid.org/0000-0002-5833-2011>, Finn Lindgren continued
+    development of the main code),
   Fabian E. Bachl [aut, cph] (Fabian Bachl wrote the main code),
   David L. Borchers [ctb, dtc, cph] (David Borchers wrote code for
     Gorilla data import and sampling, multiplot tool),
@@ -102,4 +105,4 @@ Author: Finn Lindgren [aut, cre, cph] (<https://orcid.org/0000-0002-5833-2011>,
     vignette)
 Maintainer: Finn Lindgren <finn.lindgren@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-11-21 18:30:02 UTC
+Date/Publication: 2025-07-09 21:20:02 UTC

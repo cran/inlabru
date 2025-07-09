@@ -12,68 +12,68 @@ knitr::opts_chunk$set(
 options(width = 100) # sets width of output window
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ my_component_name(
-#    main = ...,
-#    model = ...
-#  )
+# ~ my_component_name(
+#   main = ...,
+#   model = ...
+# )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ my_spde_effect(
-#    cbind(x, y),
-#    model = spde_model
-#  )
+# ~ my_spde_effect(
+#   cbind(x, y),
+#   model = spde_model
+# )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  get_xy <- function(df) {
-#    cbind(df$x, df$y)
-#  }
-#  ~ my_spde_effect(
-#    get_xy(.data.),
-#    model = spde_model
-#  )
+# get_xy <- function(df) {
+#   cbind(df$x, df$y)
+# }
+# ~ my_spde_effect(
+#   get_xy(.data.),
+#   model = spde_model
+# )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ my_intercept(1)
+# ~ my_intercept(1)
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ my_intercept(
-#    main = rep(1, n),
-#    model = "linear"
-#  )
+# ~ my_intercept(
+#   main = rep(1, n),
+#   model = "linear"
+# )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ my_sp_effect(
-#    main = a_spatial_object,
-#    model = "linear"
-#  )
+# ~ my_sp_effect(
+#   main = a_spatial_object,
+#   model = "linear"
+# )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ my_sp_effect(
-#    main = eval_spatial(a_spatial_object, .data.),
-#    model = "linear"
-#  )
+# ~ my_sp_effect(
+#   main = eval_spatial(a_spatial_object, .data.),
+#   model = "linear"
+# )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ my_fixed_effects(
-#    main = ~ x1:x2 + x3 * x4,
-#    model = "fixed"
-#  )
+# ~ my_fixed_effects(
+#   main = ~ x1:x2 + x3 * x4,
+#   model = "fixed"
+# )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ my_fixed_effects(
-#    main = MatrixModels::model.Matrix(~ x1:x2 + x3 * x4, .data.),
-#    model = "fixed"
-#  )
+# ~ my_fixed_effects(
+#   main = MatrixModels::model.Matrix(~ x1:x2 + x3 * x4, .data.),
+#   model = "fixed"
+# )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ a_component(
-#    main = a_function,
-#    model = ...
-#  )
+# ~ a_component(
+#   main = a_function,
+#   model = ...
+# )
 
 ## ----eval=FALSE-----------------------------------------------------------------------------------
-#  ~ a_component(
-#    main = a_function(.data.),
-#    model = ...
-#  )
+# ~ a_component(
+#   main = a_function(.data.),
+#   model = ...
+# )
 

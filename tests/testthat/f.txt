@@ -1,0 +1,113 @@
+  expect_equal(ibm_n(mapper), 1)
+  expect_equal(ibm_n_output(mapper, input = input), length(input))
+  expect_equal(ibm_values(mapper), 1)
+  expect_equal(ibm_values(mapper, inla_f = TRUE), 1)
+  expect_equal(
+  expect_equal(
+  expect_equal(ibm_n(mapper), length(values))
+  expect_equal(ibm_n_output(mapper, input = input), length(input))
+  expect_equal(ibm_values(mapper), values)
+  expect_equal(ibm_values(mapper, inla_f = TRUE), values)
+  expect_equal(
+  expect_equal(
+    expect_equal(ibm_n(mapper), length(values))
+    expect_equal(ibm_n_output(mapper, input = input), length(input))
+    expect_equal(ibm_values(mapper), values)
+    expect_equal(ibm_values(mapper, inla_f = TRUE), values)
+    expect_equal(
+    expect_equal(
+  expect_equal(ibm_n(mapper), 12)
+  expect_equal(
+  expect_equal(ibm_values(mapper), seq_len(12))
+  expect_equal(
+  expect_equal(ibm_jacobian(mapper, olist_data), A)
+  expect_equal(ibm_n(mapper), NA_integer_)
+  expect_equal(
+  expect_equal(
+  expect_equal(ibm_values(mapper, state = c(1, 1)), seq_len(2))
+  expect_equal(ibm_eval(mapper, input = input, state = state), val)
+  expect_equal(ibm_jacobian(mapper, input = input, state = state), A)
+  expect_equal(ibm_n(mapper), NA_integer_)
+  expect_equal(
+  expect_equal(
+  expect_equal(ibm_values(mapper, state = c(1, 1)), seq_len(2))
+  expect_equal(ibm_eval(mapper, input = input, state = state), val)
+  expect_equal(ibm_jacobian(mapper, input = input, state = state), A)
+  expect_equal(
+  expect_equal(ibm_n(mapper), NA_integer_)
+  expect_equal(
+  expect_equal(
+  expect_equal(ibm_values(mapper, state = c(1, 1)), seq_len(2))
+  expect_equal(
+  expect_equal(
+  expect_equal(
+  expect_equal(
+  expect_equal(
+  expect_equal(ibm_n(mapper), NA_integer_)
+  expect_equal(
+  expect_equal(
+  expect_equal(ibm_values(mapper, state = c(1, 1)), seq_len(2))
+  expect_equal(
+  expect_equal(
+  expect_equal(
+  expect_equal(
+  expect_equal(ibm_n(mapper), 12)
+  expect_equal(ibm_n(mapper, multi = 1), list(space = 4, time = 3))
+  expect_equal(ibm_values(mapper), seq_len(12))
+  expect_equal(
+  expect_equal(ibm_eval(mapper, list_data, state = state), val)
+  expect_equal(ibm_eval(mapper, olist_data, state = state), val)
+  expect_equal(ibm_eval(mapper, df_data, state = state), val)
+  expect_equal(ibm_eval(mapper, matrix_data, state = state), val)
+  expect_equal(ibm_eval(mapper, omatrix_data, state = state), val)
+  expect_equal(ibm_jacobian(mapper, list_data), A)
+  expect_equal(ibm_jacobian(mapper, olist_data), A)
+  expect_equal(ibm_jacobian(mapper, df_data), A)
+  expect_equal(ibm_jacobian(mapper, matrix_data), A)
+  expect_equal(ibm_jacobian(mapper, omatrix_data), A)
+  expect_equal(ibm_n(mapper), 12)
+  expect_equal(ibm_n(mapper, multi = 1), list(space = 4, time = 3))
+  expect_equal(ibm_values(mapper), seq_len(12))
+  expect_equal(
+  expect_equal(ibm_eval(mapper, list_data, state = state), val)
+  expect_equal(ibm_eval(mapper, olist_data, state = state), val)
+  expect_equal(
+  expect_equal(
+  expect_equal(ibm_jacobian(mapper, list_data), A)
+  expect_equal(ibm_jacobian(mapper, olist_data), A)
+  expect_equal(ibm_jacobian(mapper, list_data, state = NULL), A)
+  expect_equal(ibm_jacobian(mapper, olist_data, state = NULL), A)
+  expect_message(
+  expect_message(
+  expect_equal(ibm_n(mapper), 8)
+  expect_equal(ibm_n(mapper, inla_f = TRUE), 4)
+  expect_equal(ibm_n(mapper, multi = 1), list(u = 4, v = 4))
+  expect_equal(ibm_values(mapper), seq_len(8))
+  expect_equal(ibm_values(mapper, inla_f = TRUE), seq_len(4))
+  expect_equal(
+  expect_equal(ibm_jacobian(mapper, list_data), A)
+  expect_equal(
+    expect_identical(
+    expect_identical(
+    expect_identical(
+    expect_identical(
+    expect_identical(
+    expect_identical(
+    expect_identical(
+  expect_no_error({
+  expect_equal(state1, state0)
+  expect_equal(state2, state0)
+  expect_equal(val2, val1)
+  expect_equal(sum(abs(diag(jac1) - diag(jac1_d))), 0, tolerance = lowtol)
+  expect_equal(sum(abs(diag(jac1_d) - diag(jac1_dq))), 0, tolerance = lowtol)
+  expect_s3_class(c(m1), "bm_list")
+  expect_s3_class(c(m1, m2), "bm_list")
+  expect_s3_class(c(c(m1, m2), c(m2, m1)), "bm_list")
+  expect_length(val, length(loc))
+  expect_equal(val, loc)
+  expect_length(val, 25)
+  expect_length(val, 9)
+  expect_equal(ibm_n(mapper), 12)
+  expect_equal(ibm_values(mapper), seq_len(12))
+  expect_equal(ibm_jacobian(mapper, data), A)
+  expect_no_error({
