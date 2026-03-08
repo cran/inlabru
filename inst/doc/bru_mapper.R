@@ -17,6 +17,13 @@ library(inlabru)
 # ibm_eval(mapper, input, state)
 
 ## ----eval=FALSE---------------------------------------------------------------
+# mapper <- bm_shift()
+# ibm_eval(mapper,
+#   input = ...,
+#   state = ...
+# )
+
+## ----eval=FALSE---------------------------------------------------------------
 # mapper <- bm_scale()
 # ibm_eval(mapper,
 #   input = ...,
@@ -47,6 +54,13 @@ library(inlabru)
 
 ## ----eval=FALSE---------------------------------------------------------------
 # mapper <- bm_logsumexp(rescale = ...)
+# ibm_eval(mapper,
+#   input = list(block = ..., weights = ...),
+#   state = ...
+# )
+
+## ----eval=FALSE---------------------------------------------------------------
+# mapper <- bm_logitaverage()
 # ibm_eval(mapper,
 #   input = list(block = ..., weights = ...),
 #   state = ...
@@ -161,14 +175,19 @@ ibm_values(mapper, inla_f = TRUE)
 ibm_values(mapper, multi = TRUE, inla_f = TRUE)
 
 ## ----eval=FALSE---------------------------------------------------------------
+# bm_fmesher(mesh)
+
+## ----eval=FALSE---------------------------------------------------------------
 # bru_mapper(mesh)
 
 ## ----eval=FALSE---------------------------------------------------------------
-# # If ibm_values() should return mesh$loc (e.g. for "rw2" models
-# # with degree=1 meshes)
+# # If ibm_values() should return
+# #   mesh$mid (if available, e.g. for "rw2" models with degree=2 meshes)
+# # or
+# #   mesh$loc
 # bru_mapper(mesh, indexed = FALSE)
-# # If ibm_values() should return seq_along(mesh$loc) (e.g. for
-# # inla.spde2.pcmatern() models)
+# # If ibm_values() should return seq_len(fm_dof(mesh))
+# #   (e.g. for inla.spde2.pcmatern() models)
 # bru_mapper(mesh, indexed = TRUE)
 
 ## ----eval=FALSE---------------------------------------------------------------

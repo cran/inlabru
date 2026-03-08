@@ -49,8 +49,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -61,7 +62,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -343,17 +344,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;dplyr&#39;</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:stats&#39;:</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt;     filter, lag</span></span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:base&#39;:</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">library</span>(scoringRules)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt; Attaching package: &#39;dplyr&#39;</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:stats&#39;:</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt;     filter, lag</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; The following objects are masked from &#39;package:base&#39;:</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="fu">library</span>(scoringRules)</span></code></pre></div>
 <div id="proper-posterior-prediction-scores" class="section level2">
 <h2>Proper posterior prediction scores</h2>
 <p>A prediction <strong>score</strong> <span class="math inline">\(S(F,y)\)</span> evaluates some measure of
@@ -575,12 +575,12 @@ information for the prediction points, run</p>
 <span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>)</span>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">summary</span>(scores)</span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt;        SE                  DS          </span></span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt;  Min.   :   0.0012   Min.   :-0.02481  </span></span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:   0.6179   1st Qu.: 1.72725  </span></span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt;  Median :   3.3618   Median : 2.66350  </span></span>
-<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt;  Mean   :  58.3902   Mean   : 3.06775  </span></span>
-<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:  12.9955   3rd Qu.: 4.18486  </span></span>
-<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;  Max.   :4507.3164   Max.   :11.23107</span></span></code></pre></div>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt;  Min.   :  0.00022   Min.   : 0.01483  </span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:  0.55470   1st Qu.: 1.95030  </span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt;  Median :  3.20672   Median : 2.78956  </span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt;  Mean   : 18.17626   Mean   : 3.21006  </span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.: 11.47258   3rd Qu.: 3.69239  </span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;  Max.   :560.38827   Max.   :10.58477</span></span></code></pre></div>
 </div>
 <div id="log-probability-and-log-density-scores" class="section level3">
 <h3>Log-Probability and log-density scores</h3>
@@ -598,7 +598,7 @@ probability is <span class="math display">\[
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>log_score <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">log</span>(pred_pois<span class="sc">$</span>mean)</span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="fu">summary</span>(log_score)</span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;  0.6627  1.7901  2.2675  2.4337  2.9694  6.7507</span></span></code></pre></div>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;  0.5647  1.8032  2.2839  2.4738  2.7616  6.0177</span></span></code></pre></div>
 <p>to estimate the log_score (increase <code>n.samples</code> if needed
 for sufficiently small Monte Carlo error). Approximate Monte Carlo
 confidence intervals for the scores can be obtained via the Monte Carlo
@@ -611,12 +611,12 @@ standard errors:</p>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  )</span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>)</span>
 <span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt;      log_S    lower    upper</span></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 1 2.336190 2.328507 2.343931</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 2 2.237725 2.233808 2.241658</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 3 3.219634 3.211652 3.227680</span></span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 4 2.894551 2.886698 2.902465</span></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 5 3.188912 3.179749 3.198159</span></span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 6 1.463654 1.460032 1.467289</span></span></code></pre></div>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; 1 2.845689 2.832964 2.858577</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; 2 2.173229 2.168151 2.178332</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; 3 2.172802 2.165996 2.179656</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; 4 2.757201 2.752975 2.761445</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 5 2.412056 2.410966 2.413148</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt; 6 2.265886 2.264522 2.267252</span></span></code></pre></div>
 </div>
 <div id="crps" class="section level3">
 <h3>CRPS</h3>
@@ -680,17 +680,17 @@ k)\)</span>, for <span class="math inline">\(k\in
 <span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>)</span>
 <span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co"># Check that the cutoff point K has nearly probability mass 1 below it,</span></span>
 <span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co"># for all i:</span></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="fu">min</span>(results <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(k <span class="sc">==</span> max_K) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Fpred))</span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; [1] 0.4263052</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="fu">min</span>(results <span class="sc">|&gt;</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(k <span class="sc">==</span> max_K) <span class="sc">|&gt;</span> <span class="fu">pull</span>(Fpred))</span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
 <span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a></span>
 <span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>crps_scores <span class="ot">&lt;-</span></span>
-<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>  (results <span class="sc">%&gt;%</span></span>
-<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
-<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">crps =</span> <span class="fu">sum</span>(residuals<span class="sc">^</span><span class="dv">2</span>), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>  (results <span class="sc">|&gt;</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">|&gt;</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">crps =</span> <span class="fu">sum</span>(residuals<span class="sc">^</span><span class="dv">2</span>), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>    <span class="fu">pull</span>(crps))</span>
 <span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="fu">summary</span>(crps_scores)</span>
 <span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co">#&gt;  0.2134  0.6590  1.2502  2.1658  2.4041 43.4962</span></span></code></pre></div>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co">#&gt;  0.1967  0.7630  1.1877  1.9699  2.0723 18.2134</span></span></code></pre></div>
 </div>
 </div>
 <div id="normal-model-example" class="section level2">
@@ -761,12 +761,12 @@ points, run</p>
 <span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>)</span>
 <span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="fu">summary</span>(scores_normal)</span>
 <span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt;        SE                  DS               LS         </span></span>
-<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt;  Min.   :2.100e-08   Min.   :-4.978   Min.   :-1.5852  </span></span>
-<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:1.008e-03   1st Qu.:-4.826   1st Qu.:-1.5050  </span></span>
-<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt;  Median :5.919e-03   Median :-4.116   Median :-1.1313  </span></span>
-<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt;  Mean   :1.089e-02   Mean   :-3.408   Mean   :-0.7898  </span></span>
-<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:1.417e-02   3rd Qu.:-2.970   3rd Qu.:-0.5415  </span></span>
-<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co">#&gt;  Max.   :1.103e-01   Max.   :10.828   Max.   : 5.7342</span></span></code></pre></div>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt;  Min.   :1.076e-06   Min.   :-4.399   Min.   :-1.2958  </span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co">#&gt;  1st Qu.:6.345e-04   1st Qu.:-4.315   1st Qu.:-1.2543  </span></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a><span class="co">#&gt;  Median :3.604e-03   Median :-4.101   Median :-1.1382  </span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co">#&gt;  Mean   :9.792e-03   Mean   :-3.598   Mean   :-0.8810  </span></span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a><span class="co">#&gt;  3rd Qu.:1.299e-02   3rd Qu.:-3.343   3rd Qu.:-0.7407  </span></span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co">#&gt;  Max.   :6.887e-02   Max.   : 0.985   Max.   : 1.4173</span></span></code></pre></div>
 <p>Here, we’ve again used the negated log-score, so that small values
 are “better” for all three scores. Since the DS score is based on the
 log-score for Normal predictions, the <em>conditional</em> DS and LS
@@ -782,13 +782,13 @@ uncertainty:</p>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>    <span class="at">upper =</span> <span class="sc">-</span><span class="fu">log</span>(pred_normal<span class="sc">$</span>dens<span class="sc">$</span>mean <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> pred_normal<span class="sc">$</span>dens<span class="sc">$</span>mean.mc_std_err)</span>
 <span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  )</span>
 <span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>)</span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;        log_S      lower      upper</span></span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; 1 -0.9511831 -0.9617924 -0.9404601</span></span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; 2 -0.9068057 -0.9173169 -0.8961828</span></span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt; 3 -0.5739629 -0.5964087 -0.5510017</span></span>
-<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt; 4  2.1856340  2.1477539  2.2250057</span></span>
-<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt; 5 -1.0352574 -1.0423552 -1.0281088</span></span>
-<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; 6  0.4701370  0.4433998  0.4976088</span></span></code></pre></div>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;         log_S       lower        upper</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; 1 -0.01882446 -0.03111731 -0.006378606</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; 2 -0.64190251 -0.64936553 -0.634383383</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt; 3 -1.27824731 -1.28299230 -1.273479697</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt; 4 -1.05447506 -1.06204747 -1.046844879</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt; 5 -0.63967299 -0.65176544 -0.627432518</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; 6 -1.23794301 -1.24273406 -1.233128894</span></span></code></pre></div>
 </div>
 </div>
 <div id="posterior-expectation-of-conditional-scores" class="section level2">
@@ -849,7 +849,7 @@ expression, and we can use</p>
 <span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>scores <span class="ot">&lt;-</span> pred_pois<span class="sc">$</span>cond_scores<span class="sc">$</span>mean <span class="sc">-</span> pred_pois<span class="sc">$</span>lambda<span class="sc">$</span>sd<span class="sc">^</span><span class="dv">2</span></span>
 <span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="fu">summary</span>(scores)</span>
 <span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt;      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. </span></span>
-<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt;    0.0014    0.6160    3.3390   58.9887   12.9231 4561.4004</span></span></code></pre></div>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt;  -0.00021   0.56927   3.22481  18.15547  11.34509 557.53135</span></span></code></pre></div>
 <p>For this particular case, this approach is unlikely to be an
 improvement or more accurate than the basic estimator. Remarkably, this
 estimator of Squared Error isn’t even guaranteed to be positive!
@@ -921,14 +921,14 @@ expression.</p>
 <span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a>)</span>
 <span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a>crps_score <span class="ot">&lt;-</span></span>
 <span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a>  pred_pois<span class="sc">$</span>crps<span class="sc">$</span>mean <span class="sc">-</span></span>
-<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a>  (pred_pois<span class="sc">$</span>F <span class="sc">%&gt;%</span></span>
-<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">i =</span> <span class="fu">rep</span>(<span class="fu">seq_along</span>(newdata_pois<span class="sc">$</span>y), <span class="at">each =</span> max_K <span class="sc">+</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">%&gt;%</span></span>
-<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">F_var =</span> <span class="fu">sum</span>(sd<span class="sc">^</span><span class="dv">2</span>), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a>  (pred_pois<span class="sc">$</span>F <span class="sc">|&gt;</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">i =</span> <span class="fu">rep</span>(<span class="fu">seq_along</span>(newdata_pois<span class="sc">$</span>y), <span class="at">each =</span> max_K <span class="sc">+</span> <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a>    <span class="fu">group_by</span>(i) <span class="sc">|&gt;</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">F_var =</span> <span class="fu">sum</span>(sd<span class="sc">^</span><span class="dv">2</span>), <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a>    <span class="fu">pull</span>(F_var))</span>
 <span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="fu">summary</span>(crps_score)</span>
 <span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt;  0.2133  0.6575  1.2494  2.3172  2.4308 57.2278</span></span></code></pre></div>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt;  0.1965  0.7624  1.1869  1.9697  2.0782 18.1693</span></span></code></pre></div>
 <p>Formulas and functions for Poisson CRPS, as well as for other
 distributions, can be found via the <a href="https://cran.r-project.org/package=scoringRules/vignettes/article.pdf">“Evaluating
 Probabilistic Forecasts with scoringRules”</a> vignette of the
